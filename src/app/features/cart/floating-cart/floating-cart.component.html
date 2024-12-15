@@ -1,0 +1,6 @@
+<ion-fab *ngIf="cartItemCount$ | async as count" vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button color="primary" (click)="viewCart()">
+    <ion-icon name="cart"></ion-icon>
+    <ion-badge *ngIf="cartItemCount$ | async as count" color="danger">{{ count }}</ion-badge>
+  </ion-fab-button>
+</ion-fab>

@@ -1,0 +1,14 @@
+.splash-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  
+    .logo-container {
+      ion-img {
+        width: 200px;
+        height: 200px;
+      }
+    }
+  }
+  

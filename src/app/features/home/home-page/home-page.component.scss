@@ -1,0 +1,39 @@
+ion-searchbar {
+  margin: 10px;
+}
+
+ion-card {
+  margin: 10px;
+}
+
+ion-img {
+  max-height: 200px;
+  object-fit: cover;
+}
+
+.address-label p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--ion-color-medium);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.profile-avatar {
+  --size: 30px; /* Smaller size for a more compact circle */
+  background-color: #a1c4fd; /* Lighter background color */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2em;
+  color: #4b8df8; /* Slightly darker color for the text */
+  font-weight: bold;
+  border-radius: 50%; /* Circle shape */
+  padding: 5px; /* Add some padding to make the text look centered */
+}
+
+ion-header .ion-buttons {
+  font-size: 1rem;
+  color: var(--ion-color-primary);
+}

@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" (click)="openAddressModal()">
+      <ion-icon name="location-outline" style="margin-right: 5px;"></ion-icon>
+      <span>{{ userLocation || 'Fetching location...' }}</span>
+    </ion-buttons>
+    <!-- Profile icon on the right side, if needed -->
+    <ion-buttons slot="end">
+      <ion-button (click)="openProfile()">
+        <ion-icon name="person-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <!-- 
+    <ion-buttons slot="end">
+      <ion-avatar class="profile-avatar" (click)="openProfile()">
+        <ion-text>{{userInitial}}</ion-text>  Display the initial here 
+      </ion-avatar>
+    </ion-buttons> -->
+
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <ion-searchbar placeholder="Search for restaurants"></ion-searchbar>
+      </ion-col>
+    </ion-row>
+
+    <!-- Restaurants List Section -->
+    <ion-row>
+      <ion-col size="12">
+        <ion-list>
+          <ion-list-header>
+            <ion-label>Restaurants</ion-label>
+          </ion-list-header>
+          <ion-item *ngFor="let restaurant of restaurants" (click)="selectRestaurant(restaurant)">
+            <ion-avatar slot="start">
+              <ion-img [src]="restaurant.image"></ion-img>
+            </ion-avatar>
+            <ion-label>
+              <h2>{{ restaurant.name }}</h2>
+              <p>{{ restaurant.description }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

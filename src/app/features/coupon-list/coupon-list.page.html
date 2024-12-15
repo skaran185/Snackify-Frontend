@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Available Coupons</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-card *ngFor="let coupon of coupons">
+      <ion-card-header>
+        <ion-card-title>{{ coupon.code }}</ion-card-title>
+        <ion-card-subtitle>
+          {{ coupon.discountType === 'Percentage' ? coupon.discountValue + '%' : '$' + coupon.discountValue }} Off
+        </ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <p>Minimum Order Amount: ₹{{ coupon.minimumOrderAmount }}</p>
+        <p>Valid until: {{ coupon.endDate | date: 'shortDate' }}</p>
+        <ion-button expand="full" (click)="applyCoupon(coupon)">Apply</ion-button>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+</ion-content>

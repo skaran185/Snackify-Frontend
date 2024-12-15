@@ -1,0 +1,7 @@
+{
+  "name": "Snackify",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

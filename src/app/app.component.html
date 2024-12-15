@@ -1,0 +1,17 @@
+<ion-app>
+  <ion-tabs>
+    <ion-tab-bar slot="bottom" *ngIf="tabService.shouldShowTabs">
+      <ion-tab-button [routerLink]="['/tabs/food']">
+        <ion-icon name="restaurant-outline"></ion-icon>
+        <ion-label>Food</ion-label>
+      </ion-tab-button>
+      <ion-tab-button (click)="openOrders()">
+        <ion-icon name="repeat-outline"></ion-icon>
+        <ion-label>Reorder</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+    <router-outlet></router-outlet> <!-- IMPORTANT: This renders each tab's content -->
+  </ion-tabs>
+
+  <app-floating-cart></app-floating-cart>
+</ion-app>

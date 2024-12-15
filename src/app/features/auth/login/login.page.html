@@ -1,0 +1,39 @@
+<ion-content class="ion-padding">
+  <div class="login-container">
+    <ion-card>
+      <ion-card-header>
+        <ion-img src="assets/images/Top.JPG" alt="Login Image"></ion-img>
+      </ion-card-header>
+      <ion-card-content>
+        <form [formGroup]="loginForm" (ngSubmit)="login()" class="form">
+          <ion-list>
+            <!-- Email Field with Validation -->
+            <ion-item 
+              lines="full" 
+              [class.invalid]="email?.invalid && loginForm.touched">
+              <ion-input placeholder="Email" type="email" formControlName="email"></ion-input>
+            </ion-item>
+
+            <!-- Password Field with Validation -->
+            <ion-item 
+              lines="full" 
+              [class.invalid]="password?.invalid && loginForm.touched">
+              <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>
+            </ion-item>
+            
+          </ion-list>
+
+          <!-- Submit Button -->
+          <ion-button expand="block" type="submit" class="submit-button" color="primary" [disabled]="loginForm.invalid">
+            Login
+          </ion-button>
+
+          <!-- Register Button -->
+          <ion-button expand="block" fill="outline" routerLink="/auth/register" class="register-button">
+            Create Account
+          </ion-button>
+        </form>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

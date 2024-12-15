@@ -1,0 +1,54 @@
+<ion-content class="ion-padding">
+  <div class="register-container">
+    <ion-card>
+      <ion-card-header>
+        <ion-img src="assets/images/Top.JPG" alt="Register Image"></ion-img>
+      </ion-card-header>
+      <ion-card-content>
+        <form [formGroup]="registerForm" (ngSubmit)="register()" class="form">
+          <ion-list>
+            <!-- Name Field -->
+            <ion-item lines="full" [class.invalid]="name?.invalid && registerForm.touched">
+              <ion-input placeholder="Name" type="text" formControlName="name"></ion-input>
+            </ion-item>
+           
+
+            <!-- Email Field -->
+            <ion-item lines="full" [class.invalid]="email?.invalid && registerForm.touched">
+              <ion-input type="email" placeholder="Email" formControlName="email"></ion-input>
+            </ion-item>
+            
+
+            <!-- Password Field -->
+            <ion-item lines="full" [class.invalid]="password?.invalid && registerForm.touched">
+              <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>
+            </ion-item>
+           
+
+            <!-- Role Field -->
+            <ion-item lines="full" [class.invalid]="roleId?.invalid && registerForm.touched">
+              <ion-select placeholder="Role" formControlName="roleId">
+                <ion-select-option *ngFor="let role of roles" [value]="role.roleID">{{ role.roleName }}</ion-select-option>
+              </ion-select>
+            </ion-item>
+           
+
+            <!-- Phone Number Field -->
+            <ion-item lines="full" [class.invalid]="phoneNumber?.invalid && registerForm.touched">
+              <ion-input type="text" placeholder="Phone Number" formControlName="phoneNumber"></ion-input>
+            </ion-item>
+          
+          </ion-list>
+
+          <ion-button expand="block" type="submit" class="submit-button" color="primary" [disabled]="registerForm.invalid">
+            Register
+          </ion-button>
+
+          <ion-button expand="block" fill="outline" routerLink="/auth/login" class="login-button">
+            Back to Login
+          </ion-button>
+        </form>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="closeModal()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Manage Addresses</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- List of existing addresses -->
+  <ion-list>
+    <ion-item *ngFor="let address of addresses" (click)="selectAddress(address)">
+      <ion-label>
+        <h2>{{ address.street }}</h2>
+        <p>{{ address.city }}, {{ address.state }} - {{ address.zipCode }}</p>
+        <p>Contact: {{ address.contactNumber }}</p> <!-- Display contact number -->
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <!-- Button to toggle address form -->
+  <ion-button size="small" expand="full" (click)="toggleAddressForm = !toggleAddressForm">
+    + Add New Address
+  </ion-button>
+
+  <!-- Conditionally display the form inside a card -->
+  <ng-container *ngIf="toggleAddressForm">
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Add New Address</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <form [formGroup]="addressForm" (ngSubmit)="onSubmit()">
+          <ion-item>
+            <ion-input placeholder="Street" formControlName="street" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input formControlName="city" placeholder="City" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input formControlName="state" placeholder="State" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input formControlName="zipCode" placeholder="Zip Code" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input formControlName="contactNumber" placeholder="Contact Number" required></ion-input>
+          </ion-item>
+          <ion-button expand="full" type="submit">Add Address</ion-button>
+        </form>
+      </ion-card-content>
+    </ion-card>
+
+  </ng-container>
+
+</ion-content>

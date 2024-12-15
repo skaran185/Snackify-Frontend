@@ -1,0 +1,48 @@
+.add-remove {
+  width: 10%;
+  margin-left: 5%;
+}
+
+ion-card {
+  margin: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+ion-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+ion-card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.quantity-control {
+  display: flex;
+  align-items: center;
+}
+
+.quantity-input {
+  text-align: center;
+  width: 50px;
+  margin: 0 10px;
+}
+
+ion-button {
+  margin-top: 10px;
+}
+
+.quantity-control ion-button {
+  margin-left: 5px;
+}
+
+ion-list,
+ion-item,
+.cart-item {
+  width: 100%;
+}

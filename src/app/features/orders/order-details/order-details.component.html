@@ -1,0 +1,77 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Order Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="order">
+  <!-- Order Summary -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Order #{{ order.orderId }}</ion-card-title>
+      <ion-card-subtitle>{{ order.createdAt | date: 'medium' }}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-badge color="success">{{ order.orderStatus }}</ion-badge>
+      <ion-label>Total Amount: ₹{{ order.totalAmount }}</ion-label>
+      <ion-label>Discount: -₹{{ order.discount }}</ion-label>
+      <ion-label>Charges: ₹{{ order.charges }}</ion-label>
+      <ion-label>Grand Total: ₹{{ order.grandTotal }}</ion-label>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Restaurant Information -->
+  <ion-item *ngIf="order.restaurant">
+    <ion-avatar slot="start">
+      <img [src]="imageUrl + order.restaurant.image" alt="Restaurant Image" />
+    </ion-avatar>
+    <ion-label>
+      <h2>{{ order.restaurant.name }}</h2>
+      <p>{{ order.restaurant.address }}</p>
+    </ion-label>
+    <ion-button fill="clear" size="small" color="primary">
+      <ion-icon name="call-outline"></ion-icon> Contact
+    </ion-button>
+  </ion-item>
+
+  <!-- Items Ordered -->
+  <ion-list>
+    <ion-item *ngFor="let item of order.orderItems">
+      <ion-thumbnail slot="start">
+        <img [src]="imageUrl + item.menuItem.imageUrl" alt="Item Image" />
+      </ion-thumbnail>
+      <ion-label>
+        <h3>{{ item.menuItem.name }} x{{ item.quantity }}</h3>
+        <p>{{ item.menuItem.description }}</p>
+        <ion-note color="dark">₹{{ item.menuItem.price }}</ion-note>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <!-- Delivery Details -->
+  <ion-card *ngIf="order.deliveryAddress">
+    <ion-card-header>
+      <ion-card-title>Delivery Address</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>{{ order.deliveryAddress.street }}, {{ order.deliveryAddress.city }}, {{ order.deliveryAddress.state }}, {{ order.deliveryAddress.zipCode }}
+      </p>
+      <ion-label>Contact: {{ order.deliveryAddress.contactNumber }}</ion-label>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Delivery Instructions -->
+  <ion-card *ngIf="order.deliveryInstructions">
+    <ion-card-header>
+      <ion-card-title>Delivery Instructions</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>{{ order.deliveryInstructions }}</p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

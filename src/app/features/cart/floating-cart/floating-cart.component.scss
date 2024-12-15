@@ -1,0 +1,35 @@
+ion-fab {
+    z-index: 1000; // Make sure it floats above other elements
+}
+
+.cart-overlay {
+    position: fixed;
+    right: -300px; // Start off-screen
+    top: 0;
+    width: 300px; // Width of the cart
+    height: 100%;
+    background-color: white;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+    transition: right 0.3s ease; // Transition effect
+
+    &.visible {
+        right: 0; // Slide in when visible
+    }
+}
+
+/* app-floating-cart.component.scss */
+.floating-cart {
+    position: fixed;
+    bottom: 70px; /* Adjust to position above the tab bar */
+    right: 20px; /* Distance from the right side */
+    z-index: 100; /* Higher than the tabs */
+    width: 60px; /* Set width as needed */
+    height: 60px; /* Set height as needed */
+    background-color: #ff9800; /* Customize as desired */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional shadow for depth */
+  }
+  
