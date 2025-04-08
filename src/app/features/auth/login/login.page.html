@@ -1,39 +1,67 @@
-<ion-content class="ion-padding">
-  <div class="login-container">
-    <ion-card>
-      <ion-card-header>
-        <ion-img src="assets/images/Top.JPG" alt="Login Image"></ion-img>
-      </ion-card-header>
-      <ion-card-content>
-        <form [formGroup]="loginForm" (ngSubmit)="login()" class="form">
-          <ion-list>
-            <!-- Email Field with Validation -->
-            <ion-item 
-              lines="full" 
-              [class.invalid]="email?.invalid && loginForm.touched">
-              <ion-input placeholder="Email" type="email" formControlName="email"></ion-input>
-            </ion-item>
+<ion-content>
+  <div class="creative-login">
+    <!-- Animated Background -->
+    <div class="animated-background">
+      <div class="circle circle-1"></div>
+      <div class="circle circle-2"></div>
+      <div class="circle circle-3"></div>
+    </div>
 
-            <!-- Password Field with Validation -->
-            <ion-item 
-              lines="full" 
-              [class.invalid]="password?.invalid && loginForm.touched">
-              <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>
-            </ion-item>
-            
-          </ion-list>
+    <!-- Glass Card Container -->
+    <div class="glass-container">
+      <!-- Logo/Brand Section -->
+      <div class="brand-section">
+        <div class="logo-container">
+          <ion-icon name="restaurant-outline"></ion-icon>
+        </div>
+        <h1>Welcome Back</h1>
+        <p>Sign in to continue your food journey</p>
+      </div>
 
-          <!-- Submit Button -->
-          <ion-button expand="block" type="submit" class="submit-button" color="primary" [disabled]="loginForm.invalid">
-            Login
+      <!-- Login Form -->
+      <form [formGroup]="loginForm" (ngSubmit)="login()" class="login-form">
+        <div class="form-group">
+          <div class="input-container">
+            <ion-icon name="mail-outline"></ion-icon>
+            <ion-input formControlName="email" type="email" placeholder="Email Address"
+              [class.invalid]="email?.invalid && loginForm.touched" required>
+            </ion-input>
+          </div>
+          <!-- <div class="error-message" *ngIf="email?.invalid && loginForm.touched">
+            Please enter a valid email
+          </div> -->
+        </div>
+
+        <div class="form-group">
+          <div class="input-container">
+            <ion-icon name="lock-closed-outline"></ion-icon>
+            <ion-input formControlName="password" type="password" placeholder="Password"
+              [class.invalid]="password?.invalid && loginForm.touched" required>
+            </ion-input>
+          </div>
+          <!-- <div class="error-message" *ngIf="password?.invalid && loginForm.touched">
+            Password is required
+          </div> -->
+        </div>
+
+        <div class="action-buttons">
+          <ion-button expand="block" class="login-button" type="submit" [disabled]="loginForm.invalid">
+            <span>Login</span>
+            <ion-icon name="arrow-forward-outline"></ion-icon>
           </ion-button>
 
-          <!-- Register Button -->
-          <ion-button expand="block" fill="outline" routerLink="/auth/register" class="register-button">
-            Create Account
+          <ion-button expand="block" class="signup-button" fill="clear" routerLink="/auth/register">
+            New here? Create Account
           </ion-button>
-        </form>
-      </ion-card-content>
-    </ion-card>
+        </div>
+
+        <div class="skip-section">
+          <a routerLink="/tabs/food" class="skip-link">
+            <ion-icon name="play-forward-outline"></ion-icon>
+            Skip for now
+          </a>
+        </div>
+      </form>
+    </div>
   </div>
 </ion-content>

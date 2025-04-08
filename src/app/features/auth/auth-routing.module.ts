@@ -5,7 +5,11 @@ import { RegisterPage } from './register/register.page';
 
 const routes: Routes = [
   { path: 'login', component: LoginPage },
-  { path: 'register', component: RegisterPage }
+  { path: 'register', component: RegisterPage },
+  {
+    path: 'phone-login',
+    loadChildren: () => import('./phone-login/phone-login.module').then( m => m.PhoneLoginPageModule)
+  }
 ];
 
 @NgModule({

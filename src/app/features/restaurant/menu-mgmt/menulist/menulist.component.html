@@ -1,0 +1,137 @@
+<ion-content>
+  <ion-grid fixed>
+    <ion-row>
+      <!-- Categories Sidebar -->
+      <ion-col size="12" size-md="3">
+        <ion-card class="category-card">
+          <ion-card-header>
+            <ion-card-title>
+              <div class="header-with-button">
+                <span>Categories</span>
+                <ion-button fill="clear" size="small" (click)="addCategory()">
+                  <ion-icon name="add-circle" slot="icon-only"></ion-icon>
+                </ion-button>
+              </div>
+            </ion-card-title>
+          </ion-card-header>
+
+          <ion-card-content class="no-padding">
+            <ion-list lines="full">
+              <ion-item *ngFor="let category of categories"
+                [class.selected-category]="selectedCategory?.menuCategoryId === category.menuCategoryId"
+                (click)="selectCategory(category)" button detail="false">
+                <ion-label>{{ category.name }}</ion-label>
+                <ion-buttons slot="end">
+                  <ion-button fill="clear" (click)="editCategory(category); $event.stopPropagation()">
+                    <ion-icon name="create-outline" color="medium" slot="icon-only"></ion-icon>
+                  </ion-button>
+                  <ion-button fill="clear" (click)="deleteCategory(category); $event.stopPropagation()">
+                    <ion-icon name="trash-outline" color="danger" slot="icon-only"></ion-icon>
+                  </ion-button>
+                </ion-buttons>
+              </ion-item>
+            </ion-list>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <!-- Menu Items -->
+      <ion-col size="12" size-md="9">
+        <ion-card *ngIf="selectedCategory" class="menu-items-card">
+          <ion-card-header>
+            <ion-card-title>
+              <div class="header-with-button">
+                <span>{{ selectedCategory.name }} Items</span>
+                <ion-button fill="clear" size="small" (click)="addMenuItem()">
+                  <ion-icon name="add-circle" slot="icon-only"></ion-icon>
+                </ion-button>
+              </div>
+            </ion-card-title>
+          </ion-card-header>
+
+          <ion-card-content class="no-padding">
+            <div class="search-bar">
+              <ion-searchbar placeholder="Search menu items" animated (ionInput)="onSearch($event)"></ion-searchbar>
+            </div>
+
+            <ion-list lines="full" *ngIf="menuItems.length > 0; else noItems">
+              <ion-item *ngFor="let item of menuItems" class="menu-item">
+                <ion-avatar slot="start" *ngIf="item.imageUrl">
+                  <img [src]="item.imageUrl" alt="{{ item.name }}">
+                </ion-avatar>
+                <ion-avatar slot="start" *ngIf="!item.imageUrl" class="placeholder-img">
+                  <ion-icon name="restaurant"></ion-icon>
+                </ion-avatar>
+
+                <ion-label>
+                  <h2>{{ item.name }}</h2>
+                  <p *ngIf="item.description" class="item-description">{{ item.description }}</p>
+                  <p class="price-badge">{{ item.price | currency }}</p>
+
+                  <div class="item-meta">
+                    <ion-badge color="{{ item.available ? 'success' : 'medium' }}" class="availability-badge">
+                      {{ item.available ? 'Available' : 'Unavailable' }}
+                    </ion-badge>
+
+                    <span *ngIf="item.menuItemVariations?.length" class="meta-item">
+                      <ion-icon name="layers-outline"></ion-icon>
+                      {{ item.menuItemVariations.length }} variations
+                    </span>
+
+                    <span *ngIf="item.menuItemCustomizations?.length" class="meta-item">
+                      <ion-icon name="options-outline"></ion-icon>
+                      {{ item.menuItemCustomizations.length }} customizations
+                    </span>
+                  </div>
+                </ion-label>
+
+                <!-- Action buttons -->
+                <div slot="end" class="action-buttons">
+                  <ion-toggle [checked]="item.available" (ionChange)="toggleItemAvailability(item)"
+                    class="availability-toggle">
+                  </ion-toggle>
+
+                  <ion-button fill="clear" class="edit-button" (click)="editMenuItem(item)">
+                    <ion-icon name="create-outline" slot="icon-only"></ion-icon>
+                  </ion-button>
+
+                  <ion-button fill="clear" class="delete-button" (click)="deleteMenuItem(item)">
+                    <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+                  </ion-button>
+                </div>
+              </ion-item>
+            </ion-list>
+
+            <ng-template #noItems>
+              <div class="empty-state">
+                <ion-icon name="restaurant-outline" size="large"></ion-icon>
+                <h3>No menu items yet</h3>
+                <p>Get started by adding items to this category</p>
+                <ion-button (click)="addMenuItem()">
+                  <ion-icon name="add-outline" slot="start"></ion-icon>
+                  Add First Item
+                </ion-button>
+              </div>
+            </ng-template>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card *ngIf="!selectedCategory" class="menu-items-card">
+          <ion-card-content>
+            <div class="empty-state">
+              <ion-icon name="arrow-back-outline" size="large"></ion-icon>
+              <h3>Select a category</h3>
+              <p>Choose a category from the sidebar or create a new one</p>
+              <ion-button (click)="addCategory()">
+                <ion-icon name="add-outline" slot="start"></ion-icon>
+                Add New Category
+              </ion-button>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-loading [isOpen]="isLoading" message="Loading..."></ion-loading>
+</ion-content>

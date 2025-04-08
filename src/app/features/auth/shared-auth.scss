@@ -1,0 +1,213 @@
+// shared-auth.scss
+:root {
+    --primary-gradient: linear-gradient(135deg, #4834d4, #686de0);
+    --secondary-gradient: linear-gradient(135deg, #ff6b6b, #feca57);
+    --background-gradient: linear-gradient(135deg, #1e2024 0%, #17181c 100%);
+  }
+  
+  .auth-page {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--background-gradient);
+  }
+  
+  // Animated Background
+  .animated-background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.5;
+      animation: float 8s infinite ease-in-out;
+      
+      &-1 {
+        width: 300px;
+        height: 300px;
+        background: var(--secondary-gradient);
+        top: -100px;
+        right: -100px;
+        animation-delay: 0s;
+      }
+  
+      &-2 {
+        width: 400px;
+        height: 400px;
+        background: var(--primary-gradient);
+        bottom: -150px;
+        left: -150px;
+        animation-delay: -2s;
+      }
+  
+      &-3 {
+        width: 200px;
+        height: 200px;
+        background: var(--secondary-gradient);
+        top: 50%;
+        right: 25%;
+        transform: translate(50%, -50%);
+        animation-delay: -4s;
+      }
+    }
+  }
+  
+  // Glass Container
+  .glass-container {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 24px;
+    padding: 32px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 1;
+    
+    @media (max-height: 700px) {
+      padding: 24px;
+      transform: scale(0.9);
+    }
+  }
+  
+  // Brand Section
+  .brand-section {
+    text-align: center;
+    margin-bottom: 32px;
+  
+    .logo-container {
+      width: 80px;
+      height: 80px;
+      background: var(--primary-gradient);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      
+      ion-icon {
+        font-size: 40px;
+        color: white;
+      }
+    }
+  
+    h1 {
+      color: white;
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0 0 8px;
+    }
+  
+    p {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 14px;
+      margin: 0;
+    }
+  }
+  
+  // Form Styling
+  .auth-form {
+    .form-group {
+      margin-bottom: 16px;
+    }
+  
+    .input-container {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      padding: 4px 16px;
+      transition: all 0.3s ease;
+      
+      &:focus-within {
+        background: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+      }
+  
+      ion-icon {
+        font-size: 20px;
+        color: rgba(255, 255, 255, 0.6);
+        margin-right: 12px;
+      }
+  
+      ion-input {
+        --padding-start: 0;
+        --padding-end: 0;
+        --padding-top: 12px;
+        --padding-bottom: 12px;
+        --placeholder-color: rgba(255, 255, 255, 0.4);
+        --placeholder-opacity: 1;
+        --color: white;
+        font-size: 16px;
+      }
+    }
+  
+    .error-message {
+      color: #ff6b6b;
+      font-size: 12px;
+      margin-top: 4px;
+      margin-left: 16px;
+    }
+  }
+  
+  // Button Styling
+  .action-buttons {
+    margin-top: 24px;
+  
+    .primary-button {
+      --background: var(--primary-gradient);
+      --border-radius: 12px;
+      --box-shadow: none;
+      height: 48px;
+      font-weight: 600;
+      
+      span {
+        margin-right: 8px;
+      }
+      
+      ion-icon {
+        font-size: 18px;
+      }
+      
+      &.button-disabled {
+        opacity: 0.7;
+      }
+    }
+  
+    .secondary-button {
+      --color: rgba(255, 255, 255, 0.6);
+      font-size: 14px;
+      height: 40px;
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      
+      &:hover {
+        --color: white;
+      }
+  
+      ion-icon {
+        font-size: 18px;
+      }
+    }
+  }
+  
+  // Animation
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0) scale(1);
+    }
+    50% {
+      transform: translateY(-20px) scale(1.05);
+    }
+  }

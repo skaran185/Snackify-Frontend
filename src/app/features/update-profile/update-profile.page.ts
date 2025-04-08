@@ -25,7 +25,7 @@ export class UpdateProfilePage {
     this.userForm = this.formBuilder.group({
       name: ['', Validators.required],
       email: ['', Validators.required],
-      phoneNumber: ['', Validators.required],
+      phoneNumber: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
     });
 
     this.loadUserProfile();
@@ -53,9 +53,9 @@ export class UpdateProfilePage {
 
     this.userService.updateUser(user).subscribe(response => {
       if (response && response.name) {
-        alert('Profile updated successfully!');
-        this.toastrService.presentSuccessToast(response);
+        this.toastrService.presentSuccessToast('Profile update');
         this.authService.setUser(response);
+        this.cancel();
       } else {
         alert('Error updating profile');
       }

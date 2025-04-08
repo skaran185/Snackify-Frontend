@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { ModalController, NavController } from '@ionic/angular';
 import { OrderService } from 'src/app/core/services/order.service';
 import { OrderDetailsComponent } from '../order-details/order-details.component';
 import { CartService } from 'src/app/core/services/cart.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-history',
@@ -13,6 +14,9 @@ import { CartService } from 'src/app/core/services/cart.service';
 export class HistoryPage implements OnInit {
   isLoading: boolean = true;  // Simulate loading state
   orders: any[] = [];
+  applyFilter() {
+
+  }
 
   constructor(private navController: NavController,
     private modalController: ModalController,
@@ -22,14 +26,22 @@ export class HistoryPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.orderService.getOrderHistory().subscribe((res: any) => {
-      debugger
-      if (res) {
-        this.orders = res;
+    this.isLoading = true;
+    this.orderService.getOrderHistory('', '').subscribe(
+      (res: any) => {
+        if (res) {
+          this.orders = res;
+          this.isLoading = false;
+          this.applyFilter();
+        }
+      },
+      (error) => {
+        console.error('Error fetching orders', error);
         this.isLoading = false;
       }
-    })
+    );
   }
+
 
   // Navigate to Order Details
   async viewOrderDetails(order: any) {
@@ -81,16 +93,11 @@ export class HistoryPage implements OnInit {
 
   // Reorder function
   reorder(order: any) {
-
     this.orderService.getOrderById(order.orderId).subscribe((data: any) => {
       this.repeatOrder(data);
     });
-
-    debugger
-    // Assuming `cartService` is used to manage the cart in your app
-    // Clear the cart first if needed, then add items from the previous order
-
   }
+
   repeatOrder(data: any) {
     debugger
     this.cartService.clearCart();
@@ -98,9 +105,13 @@ export class HistoryPage implements OnInit {
       item.menuItem.id = item.menuItem.menuItemId
       this.cartService.addToCart(item.menuItem, item.quantity);
     }
-
     // Navigate to the cart page after adding items
+
+    
+    localStorage.removeItem('currentRestaurant');
+    localStorage.setItem('currentRestaurant', JSON.stringify(data.restaurant));
+
     this.router.navigate(['/cart']);
-    this.modalController.dismiss();
+    this.modalController.dismiss(true);
   }
 }

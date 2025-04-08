@@ -1,0 +1,112 @@
+/* Styling for the header and overall structure */
+:root {
+    --primary-color: #4CAF50;
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --border-color: #E0E0E0;
+    --background-hover: #F1F8E9;
+    --background-card: #FAFAFA;
+    --background-header: #f4f4f4;
+    --empty-state-background: #e3f2fd;
+}
+
+ion-header {
+    background-color: var(--background-header);
+}
+
+ion-toolbar {
+    --background: var(--background-header);
+}
+
+ion-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-align: center;
+}
+
+/* Order Card Styling */
+.order-card {
+    margin: 10px;
+    padding: 16px;
+    border-radius: 12px;
+    background: var(--background-card);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+ion-card-content {
+    padding: 0;
+}
+
+/* Scrollable Content */
+ion-scroll {
+    max-height: 300px;
+    padding: 0;
+}
+
+/* Order Items Styling */
+ion-item {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 16px;
+    color: var(--text-primary);
+    background-color: var(--background-hover);
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+ion-label {
+    display: block;
+    color: var(--text-primary);
+}
+
+ion-radio-group {
+    margin-top: 0;
+}
+
+/* Empty State Styling */
+.empty-state {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    background-color: var(--empty-state-background);
+    padding: 40px 20px;
+    border-radius: 12px;
+    margin-top: 20px;
+}
+
+.empty-state ion-icon {
+    color: var(--primary-color);
+    font-size: 64px;
+    margin-bottom: 16px;
+}
+
+.empty-state h3 {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.empty-state p {
+    font-size: 16px;
+    color: var(--text-secondary);
+}
+
+/* Responsive design for mobile */
+@media (max-width: 768px) {
+    .order-card {
+        margin: 8px;
+        padding: 12px;
+    }
+
+    ion-title {
+        font-size: 18px;
+    }
+
+    .empty-state h3 {
+        font-size: 20px;
+    }
+}

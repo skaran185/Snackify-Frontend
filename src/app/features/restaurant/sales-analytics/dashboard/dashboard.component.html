@@ -1,0 +1,90 @@
+<div class="dashboard-container">
+  <!-- Filters Section -->
+  <div class="filters">
+    <ion-item>
+      <ion-label>Filter by:</ion-label>
+      <ion-select [(ngModel)]="selectedFilter" (ionChange)="applyPresetFilter()">
+        <ion-select-option value="AllTime">All Time</ion-select-option>
+        <ion-select-option value="Today">Today</ion-select-option>
+        <ion-select-option value="LastWeek">Last Week</ion-select-option>
+        <ion-select-option value="LastMonth">Last Month</ion-select-option>
+        <ion-select-option value="LastYear">Last Year</ion-select-option>
+        <ion-select-option value="Custom">Custom Date Range</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <!-- Custom Date Filter (shows only when Custom is selected) -->
+    <div *ngIf="selectedFilter === 'Custom'">
+      <ion-segment [(ngModel)]="dateFilterType" (ionChange)="resetDateSelections()">
+        <ion-segment-button value="single">
+          <ion-label>Single Date</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="range">
+          <ion-label>Date Range</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+
+      <!-- Single Date Selection -->
+      <ion-item *ngIf="dateFilterType === 'single'">
+        <!-- <ion-datetime
+          >
+        </ion-datetime> -->
+        <ion-input type="date" id="date-from" presentation="date" displayFormat="DD MMM YYYY" [(ngModel)]="singleDate"
+          (ionChange)="applyCustomFilter()"></ion-input>
+      </ion-item>
+
+      <!-- Date Range Selection -->
+      <div *ngIf="dateFilterType === 'range'">
+        <ion-item>
+
+          <ion-input type="date" id="date-from" displayFormat="DD MMM YYYY" [(ngModel)]="startDate"
+            (ionChange)="applyCustomFilter()"></ion-input>
+
+        </ion-item>
+
+        <ion-item>
+
+          <ion-input type="date" id="date-from" displayFormat="DD MMM YYYY" [min]="startDate"
+            [(ngModel)]="endDate" (ionChange)="applyCustomFilter()"></ion-input>
+
+        </ion-item>
+      </div>
+
+      <ion-button expand="block" class="ion-margin-top" (click)="applyCustomFilter()">
+        Apply Custom Filter
+      </ion-button>
+    </div>
+
+    <!-- Active Filter Display -->
+    <div *ngIf="activeFilterLabel" class="active-filter-label ion-padding-top">
+      <ion-chip>
+        <ion-label>{{ activeFilterLabel }}</ion-label>
+        <ion-icon name="close-circle" (click)="clearFilters()"></ion-icon>
+      </ion-chip>
+    </div>
+  </div>
+
+  <!-- Dashboard Charts -->
+  <div class="charts-container">
+    <!-- Your charts remain the same -->
+    <div class="chart-box">
+      <h5>Sales Performance</h5>
+      <canvas id="salesPerformanceChart"></canvas>
+    </div>
+
+    <div class="chart-box">
+      <h5>Order Status Overview</h5>
+      <canvas id="orderStatusChart"></canvas>
+    </div>
+
+    <div class="chart-box">
+      <h5>Top Selling Items</h5>
+      <canvas id="topSellingItemsChart"></canvas>
+    </div>
+
+    <div class="chart-box">
+      <h5>Total Revenue Over Time</h5>
+      <canvas id="revenueOverTimeChart"></canvas>
+    </div>
+  </div>
+</div>

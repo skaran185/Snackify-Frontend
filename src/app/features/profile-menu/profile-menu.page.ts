@@ -1,13 +1,13 @@
 
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { AnimationController, ModalController } from '@ionic/angular';
+import { AlertController, AnimationController, ModalController } from '@ionic/angular';
 import { AddressService } from 'src/app/core/services/address.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { slideInRightAnimation } from 'src/app/core/slide-in-right.animation';
 import { AddressListPage } from '../address-list/address-list.page';
 import { UpdateProfilePage } from '../update-profile/update-profile.page';
 import { HistoryPage } from '../orders/history/history.page';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile-menu',
@@ -23,19 +23,34 @@ export class ProfileMenuPage {
     phoneNumber: '',
   };
 
+  isLoggedIn: boolean = false;
+  currentUserRole!: string;
+
   constructor(private modalController: ModalController,
-    private authSerive: AuthService,
+    private alertController: AlertController,
+    private authService: AuthService,
     private router: Router,
     public addressService: AddressService,
-    private animationCtrl: AnimationController) { }
+    private animationCtrl: AnimationController) {
+    this.isLoggedIn = this.authService.isLoggedIn();
+    this.authService.currentUserSubject.subscribe((res => {
+      this.loadData();
+    }))
+  }
 
   ngOnInit() {
+    this.loadData();
+  }
+  loadData() {
+    this.currentUserRole = this.authService.getUserRole()
+
     const profileMenuElement = document.querySelector('.profile-menu');
     if (profileMenuElement) {
       slideInRightAnimation(this.animationCtrl, profileMenuElement).play();
     }
-    this.user = this.authSerive.getUser();
-    this.user.address = "No address added yet :(";
+    this.user = this.authService.getUser();
+    if (this.user)
+      this.user.address = "No address added yet :(";
     if (this.addressService.currentAddress) {
       this.user.address = this.addressService.currentAddress.street + ', '
         + this.addressService.currentAddress.city
@@ -60,11 +75,48 @@ export class ProfileMenuPage {
   }
 
   // Logout user
-  logout() {
-    this.authSerive.logout();
-    // Dismiss modal
+  async logout() {
+    if (this.isLoggedIn) {
+      this.confirmLogout();
+    } else {
+      this.logoutCofirmed();
+    }
+  }
+
+  async confirmLogout() {
+    const alert = await this.alertController.create({
+      header: 'Confirm Logout',
+      message: 'Are you sure you want to logout?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Delete canceled');
+          }
+        }, {
+          text: 'logout',
+          handler: () => {
+            this.logoutCofirmed();
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  logoutCofirmed() {
+    this.authService.logout();
     this.dismiss();
     this.router.navigate(['/auth/login']);
+  }
+
+  signup() {
+    this.authService.logout();
+    this.dismiss();
+    this.router.navigate(['/auth/register']);
   }
 
   async manageAddresses() {
@@ -78,9 +130,10 @@ export class ProfileMenuPage {
 
     modal.onDidDismiss().then((result) => {
       if (result.data) {
+        this.modalController.dismiss();
       }
     });
-    return await modal.present();
+    await modal.present();
   }
 }
 

@@ -1,0 +1,166 @@
+:host {
+    --primary-color: #FF9800;
+    --primary-dark: #F57C00;
+    --primary-light: #FFF5E6;
+    --success-color: #4CAF50;
+    --success-light: #E8F5E9;
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --border-color: #E8E8E8;
+  }
+  
+  ion-header ion-toolbar {
+    --background: white;
+    --border-style: none;
+    
+    ion-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    
+    ion-button {
+      --color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 500;
+      
+      &:hover {
+        --color: var(--primary-color);
+      }
+    }
+  }
+  
+  ion-content {
+    --background: #F8F9FA;
+    
+    ion-list {
+      background: transparent;
+      padding: 16px;
+      
+      ion-card {
+        margin: 0 0 16px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        position: relative;
+        overflow: hidden;
+        
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 4px;
+          height: 100%;
+          background: var(--primary-color);
+        }
+        
+        &::after {
+          content: '';
+          position: absolute;
+          left: -8px;
+          top: 50%;
+          width: 16px;
+          height: 16px;
+          background: var(--background);
+          border-radius: 50%;
+          transform: translateY(-50%);
+        }
+        
+        ion-card-header {
+          padding: 16px 16px 8px;
+          position: relative;
+          
+          ion-card-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 0;
+            letter-spacing: 0.5px;
+          }
+          
+          ion-card-subtitle {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--success-color);
+            margin: 4px 0 0;
+            
+            &::before {
+              content: 'SAVE';
+              font-size: 11px;
+              font-weight: 500;
+              color: var(--text-secondary);
+              margin-right: 4px;
+            }
+          }
+        }
+        
+        ion-card-content {
+          padding: 8px 16px 16px;
+          
+          p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin: 4px 0;
+            display: flex;
+            align-items: center;
+            
+            &::before {
+              content: '•';
+              color: var(--primary-color);
+              margin-right: 8px;
+            }
+          }
+          
+          ion-button {
+            margin: 16px 0 0;
+            --background: var(--primary-color);
+            --background-hover: var(--primary-dark);
+            --border-radius: 8px;
+            --padding-top: 12px;
+            --padding-bottom: 12px;
+            
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            text-transform: none;
+            
+            &::part(native) {
+              transition: transform 0.2s ease;
+            }
+            
+            &:hover::part(native) {
+              transform: translateY(-1px);
+            }
+          }
+        }
+        
+        // Hover state
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+        }
+      }
+    }
+  }
+  
+  // Animation
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  ion-card {
+    animation: slideIn 0.3s ease-out;
+    animation-fill-mode: both;
+    
+    @for $i from 1 through 10 {
+      &:nth-child(#{$i}) {
+        animation-delay: #{$i * 0.05}s;
+      }
+    }
+  }

@@ -9,7 +9,7 @@ import { CartService } from './cart.service';
 })
 export class AuthService {
   private baseUrl = `${environment.apiUrl}/users`;
-  private currentUserSubject: BehaviorSubject<any> = new BehaviorSubject<any>("");
+  public currentUserSubject: BehaviorSubject<any> = new BehaviorSubject<any>("");
 
   private accessTokenSubject = new BehaviorSubject<string | null>(this.getAccessToken());
   private refreshTokenUrl = this.baseUrl + '/refresh-token';
@@ -40,10 +40,14 @@ export class AuthService {
     return currentUser ? currentUser.role : null;
   }
 
+  getUserId(): string {
+    const currentUser = this.currentUserSubject.value;
+    return currentUser ? currentUser.userID : null;
+  }
+
   setCurrentUser(response: any): void {
     this.setTokens(response);
-    localStorage.setItem('currentUser', JSON.stringify(response.user));
-    this.currentUserSubject.next(response.user);
+    this.setUser(response.user);
   }
 
   getUser(): any {
@@ -101,8 +105,10 @@ export class AuthService {
   logout() {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
-    localStorage.removeItem('user')
+    localStorage.removeItem('user');
+    localStorage.clear();
     this.accessTokenSubject.next(null);
+    this.currentUserSubject.next(null);
     this.cartService.clearCart();
   }
 

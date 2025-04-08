@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="sleek-title">Order Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Order Card -->
+  <ion-card class="order-card">
+    <ion-card-content>
+      <!-- Scrollable Content -->
+      <ion-scroll scrollY="true">
+        <ion-list>
+          <ion-radio-group>
+            <!-- Looping through order items -->
+            <ion-item *ngFor="let item of order.orderItems; let i = index" lines="none">
+              <ion-label>
+                <strong>{{i + 1}} - </strong>
+                <!-- {{ item.menuItem.name }} - ₹{{ item.menuItem.price }} x {{ item.quantity }} -->
+                {{ item.menuItem.name }} - ₹{{ getItemPrice(item) }} × {{ item.quantity }}
+
+              </ion-label>
+            </ion-item>
+          </ion-radio-group>
+        </ion-list>
+      </ion-scroll>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Empty State (optional, in case there are no items in order) -->
+  <div *ngIf="order.orderItems.length === 0" class="empty-state">
+    <ion-icon name="cart" size="large"></ion-icon>
+    <h3>No items in the order</h3>
+    <p>It seems like your order is empty. Please add some items.</p>
+  </div>
+</ion-content>

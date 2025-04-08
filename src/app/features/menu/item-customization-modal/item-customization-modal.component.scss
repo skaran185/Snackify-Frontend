@@ -1,0 +1,143 @@
+:host {
+  --primary-color: #FF9800;
+  --primary-dark: #F57C00;
+  --text-primary: #333333;
+  --text-secondary: #666666;
+  --border-color: #E8E8E8;
+  --background-hover: #FFF5E6;
+}
+
+ion-header {
+  ion-toolbar {
+    --background: white;
+    --border-color: var(--border-color);
+    --min-height: 56px;
+    
+    .sleek-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+      text-align: center;
+    }
+
+    .close-button {
+      --color: var(--text-primary);
+      --padding-start: 12px;
+      --padding-end: 12px;
+    }
+  }
+}
+
+ion-content {
+  --background: #FFFFFF;
+  
+  .portion-container {
+    padding: 16px;
+    
+    .portion-option {
+      position: relative;
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      margin-bottom: 8px;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      background: white;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background: var(--background-hover);
+        border-color: var(--primary-color);
+      }
+      
+      &:active {
+        transform: scale(0.98);
+      }
+      
+      ion-radio {
+        --color: var(--border-color);
+        --color-checked: var(--primary-color);
+        margin-right: 12px;
+        
+        &::part(container) {
+          width: 18px;
+          height: 18px;
+          border-width: 2px;
+        }
+      }
+      
+      .option-content {
+        flex: 1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        
+        .option-details {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+          
+          .portion-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+          }
+          
+          .portion-description {
+            font-size: 12px;
+            color: var(--text-secondary);
+          }
+        }
+        
+        .price-tag {
+          font-size: 14px;
+          font-weight: 600;
+          color: var(--primary-color);
+          padding: 4px 8px;
+          background: var(--background-hover);
+          border-radius: 6px;
+        }
+      }
+    }
+  }
+  
+  .action-footer {
+    position: fixed;
+    // bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 12px 16px;
+    background: white;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+    
+    .add-button {
+      --background: var(--primary-color);
+      --background-hover: var(--primary-dark);
+      --background-activated: var(--primary-dark);
+      --border-radius: 8px;
+      --padding-top: 14px;
+      --padding-bottom: 14px;
+      
+      margin: 0;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      text-transform: none;
+      
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      
+      ion-icon {
+        font-size: 18px;
+      }
+      
+      &:hover {
+        --background: var(--primary-dark);
+      }
+    }
+  }
+}

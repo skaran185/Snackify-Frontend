@@ -1,0 +1,79 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ mode === 'add' ? 'Add Menu Item' : 'Edit Menu Item' }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="menuItemForm" (ngSubmit)="onSubmit()">
+    <ion-item>
+      <ion-label position="stacked">Restaurant <ion-text color="danger">*</ion-text></ion-label>
+      <ion-select formControlName="restaurantId" (ionChange)="onRestaurantChange($event.detail.value)" interface="action-sheet">
+        <ion-select-option *ngFor="let restaurant of restaurants" [value]="restaurant.restaurantId">
+          {{ restaurant.name }}
+        </ion-select-option>
+      </ion-select>
+      <!-- <ion-note slot="error" *ngIf="menuItemForm.get('restaurantId').touched && menuItemForm.get('restaurantId').invalid">
+        Restaurant is required
+      </ion-note> -->
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Category <ion-text color="danger">*</ion-text></ion-label>
+      <ion-select formControlName="menuCategoryId" interface="action-sheet">
+        <ion-select-option *ngFor="let category of menuCategories" [value]="category.menuCategoryId">
+          {{ category.name }}
+        </ion-select-option>
+      </ion-select>
+      <!-- <ion-note slot="error" *ngIf="menuItemForm.get('menuCategoryId').touched && menuItemForm.get('menuCategoryId').invalid">
+        Category is required
+      </ion-note> -->
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Name <ion-text color="danger">*</ion-text></ion-label>
+      <ion-input formControlName="name" type="text" maxlength="100"></ion-input>
+      <!-- <ion-note slot="error" *ngIf="menuItemForm.get('name').touched && menuItemForm.get('name').invalid">
+        Name is required and must be less than 100 characters
+      </ion-note> -->
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Description</ion-label>
+      <ion-textarea formControlName="description" rows="3"></ion-textarea>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Price ($) <ion-text color="danger">*</ion-text></ion-label>
+      <ion-input formControlName="price" type="number" min="0" max="1000" step="0.01"></ion-input>
+      <!-- <ion-note slot="error" *ngIf="menuItemForm.get('price').touched && menuItemForm.get('price').invalid">
+        Price is required and must be between 0 and 1000
+      </ion-note> -->
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Image URL</ion-label>
+      <ion-input formControlName="imageUrl" type="url" placeholder="https://example.com/image.jpg"></ion-input>
+      <!-- <ion-note slot="error" *ngIf="menuItemForm.get('imageUrl').touched && menuItemForm.get('imageUrl').invalid">
+        Please enter a valid URL
+      </ion-note> -->
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-label>Available</ion-label>
+      <ion-toggle formControlName="available" slot="end"></ion-toggle>
+    </ion-item>
+
+    <div class="ion-padding-top">
+      <ion-button expand="block" type="submit" [disabled]="isSubmitting">
+        <ion-spinner name="dots" *ngIf="isSubmitting"></ion-spinner>
+        <span *ngIf="!isSubmitting">{{ mode === 'add' ? 'Add Menu Item' : 'Update Menu Item' }}</span>
+      </ion-button>
+    </div>
+  </form>
+</ion-content>

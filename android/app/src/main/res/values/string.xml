@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Snackify</string>
+    <string name="title_activity_main">Snackify</string>
+    <string name="package_name">food.snackify</string>
+    <string name="custom_url_scheme">food.snackify</string>
+</resources>

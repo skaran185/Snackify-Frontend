@@ -1,0 +1,23 @@
+<ion-content>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="toggleCategoryList()" [class.active]="showCategories">
+      <ion-icon [name]="showCategories ? 'close' : 'restaurant'"></ion-icon>
+    </ion-fab-button>
+
+    <div class="category-overlay" *ngIf="showCategories">
+      <div class="overlay-header">
+        <h3>Menu Categories</h3>
+      </div>
+      <div class="category-list">
+        <div class="category-item" *ngFor="let category of categories; let i = index"
+          (click)="selectCategory(category.id)">
+          <div class="category-name">
+            <ion-icon name="restaurant-outline"></ion-icon>
+            <span>{{ category.name }}</span>
+          </div>
+          <span class="item-count">{{ category.items.length }}</span>
+        </div>
+      </div>
+    </div>
+  </ion-fab>
+</ion-content>

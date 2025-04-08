@@ -1,8 +1,8 @@
-<ion-header>
+<ion-header class="custom-header">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-button (click)="dismiss()">
-        <ion-icon name="arrow-back"></ion-icon>
+        <ion-icon name="arrow-back-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-title>Order History</ion-title>
@@ -11,9 +11,9 @@
 
 <ion-content>
   <!-- Loader to indicate loading state in center -->
-  <div *ngIf="isLoading" class="loader-container">
+  <!-- <div *ngIf="isLoading" class="loader-container">
     <ion-spinner name="crescent" color="primary"></ion-spinner>
-  </div>
+  </div> -->
 
   <!-- Order List with Icons and Enhanced Styling -->
   <ion-list *ngIf="!isLoading && orders.length > 0">
@@ -26,21 +26,25 @@
       </ion-card-header>
       <ion-card-content>
         <div class="order-info">
-          <ion-icon name="calendar-outline"></ion-icon> <span>{{ order.createdAt | date: 'medium' }}</span>
+          <ion-icon name="calendar-outline"></ion-icon>
+          <span>{{ order.createdAt | date: 'medium' }}</span>
         </div>
         <div class="order-info">
-          <ion-icon name="cash-outline"></ion-icon> <span>Total: ₹{{ order.grandTotal }}</span>
+          <ion-icon name="cash-outline"></ion-icon>
+          <span>Total: ₹{{ order.grandTotal }}</span>
         </div>
         <div class="order-info">
           <ion-icon [name]="statusIcon(order.status)" color="{{ getStatusColor(order.status) }}"></ion-icon>
           <span>Status: {{ order.orderStatus }}</span>
         </div>
         <ion-button fill="clear" color="primary" (click)="viewOrderDetails(order)">
-          View Details <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
+          View Details
+          <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
         </ion-button>
         <!-- Reorder Button -->
         <ion-button fill="outline" color="secondary" (click)="reorder(order)">
-          Reorder <ion-icon slot="end" name="repeat-outline"></ion-icon>
+          Reorder
+          <ion-icon slot="end" name="repeat-outline"></ion-icon>
         </ion-button>
       </ion-card-content>
     </ion-card>

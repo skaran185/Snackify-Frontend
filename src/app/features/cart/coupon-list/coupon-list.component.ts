@@ -17,11 +17,11 @@ export class CouponListComponent implements OnInit {
     private couponService: CouponService,
     private menuService: MenuService,
     private cartService: CartService,
-  ) {}
+  ) { }
 
   ngOnInit() {
     // Fetch coupons specific to the restaurant
-    this.couponService.getCoupons(this.cartService.currentRestaurantId).subscribe((res: any) => {
+    this.couponService.getCoupons(this.cartService.currentRestaurant.restaurantID).subscribe((res: any) => {
       this.coupons = res;
     });
   }

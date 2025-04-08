@@ -1,61 +1,263 @@
-.bg-image {
-    background-image: url('https://wallpaperaccess.com/full/3014622.jpg');
-    height: 200px; /* Adjust the height as needed */
-    background-size: cover;
-    background-position: center;
-  }
-  
-  .restaurant-info {
-    padding: 16px;
-  }
-  
-  .restaurant-details,
-  .delivery-info {
-    font-size: 0.9rem;
-    color: #333;
-    display: flex;
-    align-items: center;
-  }
-  
-  .restaurant-details ion-icon,
-  .delivery-info ion-icon {
-    margin-right: 4px;
-  }
-  
-  .dot {
-    margin: 0 6px;
-    color: #666;
-  }
-  
-  .quantity-controls {
-    display: flex;
-    align-items: center;
-    margin-top: 8px;
-  }
-  
-  .quantity-controls ion-button {
-    margin: 0 4px;
-  }
-  
-  .add-button {
-    margin-top: 8px;
-  }
-  /* Centered Loading Overlay with Faded Background */
-.loading-overlay {
-    position: fixed;
+.custom-header {
+  ion-toolbar {
+    --background: transparent;
+    --border-width: 0;
+    position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.8); /* Faded white background */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000; /* Ensure it appears on top of other elements */
+    right: 0;
+    z-index: 10;
+    
+    .nav-button, .favorite-button {
+      --background: rgba(255, 255, 255, 0.9);
+      --border-radius: 8px;
+      margin: 8px;
+      height: 36px;
+      width: 36px;
+      
+      ion-icon {
+        color: #333;
+        font-size: 20px;
+      }
+    }
+  }
+}
+
+.restaurant-hero {
+  position: relative;
+  height: 200px;
+  
+  .bg-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-size: cover;
+    background-position: center;
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 50%;
+      background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.7));
+    }
   }
   
-  .loading-overlay ion-spinner {
-    width: 50px;
-    height: 50px;
+  .restaurant-details {
+    position: absolute;
+    bottom: 20px;
+    left: 16px;
+    right: 16px;
+    color: white;
+    
+    h1 {
+      font-size: 24px;
+      font-weight: 600;
+      margin: 0 0 8px 0;
+    }
+    
+    .primary-info, .secondary-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      
+      .rating {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        
+        ion-icon {
+          color: #FFD700;
+        }
+      }
+      
+      .divider {
+        color: rgba(255,255,255,0.7);
+      }
+    }
+    
+    .secondary-info {
+      margin-top: 8px;
+      color: rgba(255,255,255,0.9);
+      font-size: 13px;
+      
+      ion-icon {
+        font-size: 16px;
+      }
+    }
   }
+}
+
+.menu-container {
+  padding: 16px;
+  background: white;
   
+  .category-section {
+    margin-bottom: 24px;
+    
+    .category-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      
+      h2 {
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+        margin: 0;
+      }
+      
+      .item-count {
+        font-size: 13px;
+        color: #666;
+      }
+    }
+    
+    .menu-items {
+      .menu-item {
+        display: flex;
+        gap: 16px;
+        padding: 16px 0;
+        border-bottom: 1px solid #E0E0E0;
+        position: relative;
+        
+        &:last-child {
+          border-bottom: none;
+        }
+        
+        .item-details {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          padding-right: 100px;
+          
+          .item-info {
+            h3 {
+              font-size: 16px;
+              font-weight: 500;
+              color: #333;
+              margin: 0 0 4px 0;
+            }
+            
+            .price {
+              font-size: 14px;
+              font-weight: 500;
+              color: #333;
+              margin: 0;
+            }
+            
+            .description {
+              font-size: 13px;
+              color: #666;
+              margin: 4px 0 0 0;
+              line-height: 1.4;
+            }
+          }
+          
+          .item-actions {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            
+            .quantity-controls {
+              display: flex;
+              align-items: center;
+              gap: 8px;
+              background: white;
+              border: 1px solid #FF9800;
+              border-radius: 6px;
+              padding: 2px;
+              
+              .control-btn {
+                width: 28px;
+                height: 28px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: none;
+                background: none;
+                color: #FF9800;
+                
+                &:hover {
+                  background: rgba(255, 152, 0, 0.1);
+                }
+                
+                ion-icon {
+                  font-size: 18px;
+                }
+              }
+              
+              .quantity {
+                min-width: 24px;
+                text-align: center;
+                font-size: 14px;
+                font-weight: 500;
+                color: #333;
+              }
+            }
+            
+            .add-btn {
+              background: white;
+              border: 1px solid #FF9800;
+              color: #FF9800;
+              padding: 6px 16px;
+              border-radius: 6px;
+              font-size: 14px;
+              font-weight: 500;
+              transition: all 0.2s;
+              
+              &:hover {
+                background: #FF9800;
+                color: white;
+              }
+            }
+          }
+        }
+        
+        .item-image {
+          width: 80px;
+          height: 80px;
+          border-radius: 8px;
+          overflow: hidden;
+          order: -1;
+          
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* Add these styles to your existing SCSS file */
+
+.search-container {
+  padding: 8px 16px;
+  background-color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+ion-searchbar {
+  --border-radius: 8px;
+  --box-shadow: none;
+  --background: #f5f5f5;
+  --placeholder-color: #666;
+  --icon-color: #666;
+  --cancel-button-color: var(--ion-color-primary);
+  padding: 0;
+}

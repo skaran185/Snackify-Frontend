@@ -1,0 +1,119 @@
+.image-upload-container {
+    display: flex;
+    justify-content: center;
+    margin: 24px 0 32px;
+    
+    .image-preview-circle {
+      position: relative;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      overflow: hidden;
+      background-color: #f4f5f8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      border: 4px solid #ffffff;
+      
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      
+      .placeholder-image {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        background-color: var(--ion-color-light);
+        
+        ion-icon {
+          font-size: 64px;
+          color: var(--ion-color-medium);
+        }
+      }
+      
+      .update-image-button {
+        position: absolute;
+        bottom: 12px;
+        right: 12px;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background-color: var(--ion-color-primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        
+        &:active {
+          transform: scale(0.95);
+        }
+        
+        ion-icon {
+          font-size: 24px;
+          color: white;
+        }
+      }
+    }
+  }
+  
+  ion-card {
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    margin-bottom: 16px;
+    overflow: hidden;
+    
+    ion-card-header {
+      padding-bottom: 4px;
+    }
+    
+    ion-card-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+    
+    ion-item {
+      --padding-start: 0;
+      --padding-end: 0;
+      --inner-padding-end: 0;
+      --border-color: var(--ion-color-light-shade);
+      
+      &:last-child {
+        --border-color: transparent;
+      }
+    }
+  }
+  
+  ion-button[type="submit"] {
+    --border-radius: 10px;
+    margin: 20px 0 40px;
+    height: 50px;
+    font-weight: 600;
+    font-size: 16px;
+  }
+  
+  ion-note {
+    font-size: 12px;
+    padding-top: 4px;
+  }
+  
+  ion-textarea, ion-input {
+    --padding-top: 8px;
+    --padding-bottom: 8px;
+  }
+  
+  // Add animation for the image preview
+  .image-preview-circle {
+    transition: all 0.3s ease;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
+    }
+  }

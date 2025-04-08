@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button class="close-button" (click)="cancel()">
+        <ion-icon name="chevron-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="sleek-title">Select Size</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="portion-container">
+    <ion-radio-group [(ngModel)]="selectedVariation">
+      <div class="portion-option" *ngFor="let variation of item.variations" (click)="selectVariation(variation)">
+        <ion-radio [value]="variation"></ion-radio>
+        <div class="option-content">
+          <div class="option-details">
+            <span class="portion-name">{{ variation.name }}</span>
+            <span class="portion-description" *ngIf="variation.description">{{ variation.description }}</span>
+          </div>
+          <div class="price-tag">₹{{ variation.price }}</div>
+        </div>
+      </div>
+
+      <!-- Customization Option -->
+      <!-- <div class="portion-option" >
+        <ion-radio [value]="'custom'"></ion-radio>
+        <div class="option-content">
+          <div class="option-details">
+            <span class="portion-name">Custom Portion</span>
+            <ion-input type="number" [(ngModel)]="customQuantity" placeholder="Enter quantity"></ion-input>
+          </div>
+        </div>
+      </div> -->
+    </ion-radio-group>
+  </div>
+
+  <div class="action-footer">
+    <ion-button expand="block" class="add-button" (click)="confirm()">
+      <span>Add to Cart</span>
+      <ion-icon name="arrow-forward"></ion-icon>
+    </ion-button>
+  </div>
+</ion-content>

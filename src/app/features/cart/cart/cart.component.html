@@ -1,102 +1,167 @@
-<ion-header>
+<ion-header class="ion-no-border">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
+      <ion-button class="custom-back-button" (click)="goBack()">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
-    <ion-title>Cart</ion-title>
+    <ion-title class="ion-text-center">My Cart</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="clearCart()">
-        <ion-icon name="trash"></ion-icon>
+      <ion-button class="custom-clear-button" (click)="clearCart()">
+        <ion-icon name="trash-outline" color="danger"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content [fullscreen]="true">
+  <ng-container *ngIf="(cartItems$ | async) as cartItems">
+    <!-- Empty Cart State -->
+    <div *ngIf="cartItems.length === 0" class="empty-cart-container">
+      <div class="empty-cart-icon">
+        <ion-icon name="fast-food-outline"></ion-icon>
+      </div>
+      <h2>Your cart is hungry!</h2>
+      <p>Add some delicious food to your cart and satisfy your cravings.</p>
+      <ion-button expand="block" class="browse-menu-btn" (click)="goBack()">
+        Browse Menu
+        <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
+      </ion-button>
+    </div>
 
-  <!-- Items Card -->
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Items in Cart</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-list class="cart-item">
-        <ion-item *ngFor="let item of (cartItems$ | async)">
-          <ion-label>
-            <h2>{{ item.menuItem.name }}</h2>
-            <p>₹{{ item.menuItem.price * item.quantity }}</p>
-          </ion-label>
-          <div class="quantity-control">
-            <ion-button size="small" (click)="decreaseQuantity(item)">-</ion-button>
-            <ion-input class="quantity-input" type="number" [(ngModel)]="item.quantity" name="quantity"
-              disabled></ion-input>
-            <ion-button size="small" (click)="increaseQuantity(item)">+</ion-button>
+    <!-- Cart Items -->
+    <div *ngIf="cartItems.length > 0" class="cart-content">
+      <!-- Items Section -->
+      <ion-card class="cart-items-card">
+        <ion-card-header>
+          <ion-card-title>Your Items</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+          <ion-list lines="full">
+            <ion-item *ngFor="let item of cartItems" class="cart-item">
+              <div class="item-details">
+                <h3>{{ item.menuItem.name }}</h3>
+                <ng-container *ngIf="item.menuItem.selectedVariation; else normalItem">
+                  <p class="variation">{{ item.menuItem.selectedVariation.name }}</p>
+                  <p class="price">₹{{ item.menuItem.selectedVariation.price * item.quantity }}</p>
+                </ng-container>
+                <ng-template #normalItem>
+                  <p class="price">₹{{ item.menuItem.price * item.quantity }}</p>
+                </ng-template>
+              </div>
+              <div class="quantity-controls" slot="end">
+                <ion-button fill="clear" (click)="decreaseQuantity(item)">
+                  <ion-icon name="remove-circle-outline"></ion-icon>
+                </ion-button>
+                <span class="quantity">{{ item.quantity }}</span>
+                <ion-button fill="clear" (click)="increaseQuantity(item)">
+                  <ion-icon name="add-circle-outline"></ion-icon>
+                </ion-button>
+              </div>
+            </ion-item>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- Coupon Section -->
+      <ion-card class="coupon-card" (click)="openCouponModal()">
+        <ion-card-content>
+          <div class="coupon-content">
+            <div class="coupon-icon">
+              <ion-icon name="ticket-outline"></ion-icon>
+            </div>
+            <div class="coupon-text">
+              <h3>Apply Coupon</h3>
+              <p *ngIf="!couponCode">Add a promo code to get discounts</p>
+              <p *ngIf="couponCode" class="applied-coupon">{{ couponCode }}</p>
+            </div>
+            <ion-icon name="chevron-forward-outline" class="arrow-icon"></ion-icon>
           </div>
-        </ion-item>
-      </ion-list>
-    </ion-card-content>
-  </ion-card>
+        </ion-card-content>
+      </ion-card>
 
-  <!-- Coupons Card -->
-  <ion-card (click)="openCouponModal()">
-    <ion-button expand="full">View Coupons</ion-button>
-    <ion-card-content>
-      <ion-label>
-        <h2 *ngIf="couponCode">{{ couponCode }}</h2>
-      </ion-label>
-    </ion-card-content>
-  </ion-card>
+      <!-- Delivery Address Section -->
+      <ion-card class="address-card" (click)="openAddressModal()">
+        <ion-card-content>
+          <div class="address-content">
+            <div class="address-icon">
+              <ion-icon name="location-outline"></ion-icon>
+            </div>
+            <div class="address-text">
+              <h3>Delivery Address</h3>
+              <ng-container *ngIf="selectedAddress; else noAddress">
+                <p class="selected-address">
+                  {{ selectedAddress.type }}
+                  <ion-badge color="primary" class="address-badge">{{ selectedAddress.tag }}</ion-badge>
+                </p>
+                <p class="address-details">
+                  {{ selectedAddress.street }}, {{ selectedAddress.city }}
+                </p>
+              </ng-container>
+              <ng-template #noAddress>
+                <p>Select a delivery address</p>
+              </ng-template>
+            </div>
+            <ion-icon name="chevron-forward-outline" class="arrow-icon"></ion-icon>
+          </div>
+        </ion-card-content>
+      </ion-card>
 
-  <!-- Delivery Address Card -->
-  <ion-card (click)="openAddressModal()">
-    <ion-button expand="full">View Addresses</ion-button>
-    <ion-card-content>
-      <ion-label>
-        <h2 *ngIf="selectedAddress">{{ selectedAddress.street }}, {{ selectedAddress.city }}</h2>
-      </ion-label>
-    </ion-card-content>
-  </ion-card>
+      <!-- Delivery Instructions -->
+      <ion-card class="instructions-card">
+        <ion-card-content>
+          <div class="instructions-header">
+            <ion-icon name="information-circle-outline"></ion-icon>
+            <h3>Delivery Instructions</h3>
+          </div>
+          <ion-item lines="none" class="custom-input">
+            <ion-input [(ngModel)]="deliveryInstructions" placeholder="Add instructions for delivery partner"
+              class="instructions-input">
+            </ion-input>
+          </ion-item>
+        </ion-card-content>
+      </ion-card>
 
-  <!-- Delivery Instructions Card -->
-  <ion-card>
-    <ion-card-content>
-      <ion-item>
-        <ion-label position="floating">Delivery Instructions</ion-label>
-        <ion-textarea [(ngModel)]="deliveryInstructions"></ion-textarea>
-      </ion-item>
-      <p>Please provide any specific instructions for the delivery person, such as leaving the package at the door or
-        ringing the bell twice.</p>
-    </ion-card-content>
-  </ion-card>
-
-  <!-- Bill Details Card -->
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Bill Details</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-list>
-        <ion-item>
-          <ion-label>Item Total</ion-label>
-          <ion-note slot="end">₹{{ getTotal()}}</ion-note>
-        </ion-item>
-        <ion-item *ngIf="discount > 0">
-          <ion-label>Discount</ion-label>
-          <ion-note slot="end">-₹{{ discount}}</ion-note>
-        </ion-item>
-        <ion-item>
-          <ion-label>Delivery Fee</ion-label>
-          <ion-note slot="end">₹{{ deliveryFee}}</ion-note>
-        </ion-item>
-        <ion-item>
-          <ion-label>Grand Total</ion-label>
-          <ion-note slot="end">₹{{ getGrandTotal()}}</ion-note>
-        </ion-item>
-      </ion-list>
-    </ion-card-content>
-  </ion-card>
-
-
-
-  <ion-button expand="full" (click)="checkout()">Checkout</ion-button>
+      <!-- Bill Details -->
+      <ion-card class="bill-details-card">
+        <ion-card-header>
+          <ion-card-title>Bill Details</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <div class="bill-item">
+            <span>Item Total</span>
+            <span class="amount">₹{{ getTotal() }}</span>
+          </div>
+          <div class="bill-item" *ngIf="discount > 0">
+            <span>Discount</span>
+            <span class="amount discount">-₹{{ discount }}</span>
+          </div>
+          <div class="bill-item">
+            <span>Delivery Fee</span>
+            <span class="amount">₹{{ deliveryFee }}</span>
+          </div>
+          <!-- <div class="bill-item">
+            <span>Tax</span>
+            <span class="amount">₹{{ getTaxes() }}</span>
+          </div> -->
+          <div class="bill-item total">
+            <span>To Pay</span>
+            <span class="amount">₹{{ getGrandTotal() }}</span>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </ng-container>
 </ion-content>
+
+<ion-footer class="ion-no-border" *ngIf="getTotal()>0">
+  <ion-toolbar>
+    <ion-button expand="block" class="checkout-button" (click)="checkout()">
+      <div class="checkout-content">
+        <span>Proceed to Checkout</span>
+        <span class="total-amount">₹{{ getGrandTotal() }}</span>
+      </div>
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

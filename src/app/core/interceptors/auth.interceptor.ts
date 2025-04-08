@@ -1,60 +1,85 @@
+// auth.interceptor.ts
 import { Injectable } from '@angular/core';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, switchMap } from 'rxjs/operators';
+import { Observable, throwError, from } from 'rxjs';
+import { catchError, finalize, switchMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { LoaderService } from '../services/loader.service';
 import { AuthService } from '../services/auth.service';
-import { ToastService } from '../services/toast.services';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
+  private isRefreshing = false;
+  private refreshSubscriber: any = null;
 
-  constructor(private authService: AuthService, private router: Router,
-    private toastService: ToastService
-  ) { }
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    // private loaderService: LoaderService
+  ) {}
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const token = this.authService.getToken(); // Retrieve the token
-    let authReq = req;
-    if (token) {
-      authReq = req.clone({
-        setHeaders: { Authorization: `Bearer ${token}` }
-      });
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    // Skip loader for specific requests
+    const skipLoader = request.headers.get('Skip-Loader') === 'true';
+    
+    if (!request.url.includes('/login')) {
+      request = this.addToken(request);
     }
 
-    return next.handle(authReq).pipe(
+    // Show loader if not skipped
+    // if (!skipLoader) {
+    //   from(this.loaderService.show());
+    // }
+
+    return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
-        if (error.status === 401 && error.url?.includes('redresh-token')) {
-          this.toastService.presentErrorToast('Session is expired. Please login again.');
-          this.router.navigate(['/auth/login']);
+        if (error.status === 401) {
+          if (!request.url.includes('/refresh-token')) {
+            return this.handle401Error(request, next);
+          } else {
+            // this.loaderService.forceHide();
+            this.authService.logout();
+            this.router.navigate(['/login']);
+          }
         }
-        if (error.status === 401) { // Unauthorized
-          return this.handle401Error(authReq, next);
-        }
-        this.toastService.presentErrorToast('Something went wrong. Please try again later.');
-        return throwError(error);
+        return throwError(() => error);
+      }),
+      finalize(async () => {
+        // if (!skipLoader) {
+        //   await this.loaderService.hide().catch(err => {
+        //     console.error('Error hiding loader in finalize:', err);
+        //     // this.loaderService.reset();
+        //   });
+        // }
       })
     );
   }
 
-  private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
-    return this.authService.refreshToken().pipe( // Assume refreshToken returns an observable of the new token
-      switchMap((newToken: any) => {
-        // Set the new token in AuthService
-        this.authService.setTokens(newToken);
-        // Clone the failed request with the new token
-        const newRequest = request.clone({
-          setHeaders: { Authorization: `Bearer ${newToken}` }
-        });
-        // Retry the request with the new token
-        return next.handle(newRequest);
-      }),
-      catchError((err) => {
-        // If token refresh fails, navigate to login
-        this.authService.logout();
-        this.router.navigate(['/auth/login']);
-        return throwError(err);
-      })
-    );
+  private addToken(request: HttpRequest<any>): HttpRequest<any> {
+    const token = this.authService.getToken();
+    return token ? request.clone({
+      setHeaders: { Authorization: `Bearer ${token}` }
+    }) : request;
+  }
+
+  private handle401Error(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    if (!this.isRefreshing) {
+      this.isRefreshing = true;
+
+      return from(this.authService.refreshToken()).pipe(
+        switchMap(token => {
+          this.isRefreshing = false;
+          return next.handle(this.addToken(request));
+        }),
+        catchError(error => {
+          this.isRefreshing = false;
+          // this.loaderService.forceHide();
+          this.authService.logout();
+          this.router.navigate(['/login']);
+          return throwError(() => error);
+        })
+      );
+    }
+    return next.handle(request);
   }
 }

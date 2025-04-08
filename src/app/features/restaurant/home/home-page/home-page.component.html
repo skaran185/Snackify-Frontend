@@ -1,0 +1,46 @@
+<ion-header class="admin-header">
+  <ion-toolbar class="main-toolbar">
+    <ion-title class="brand-title">
+      <ion-text>Restaurant Admin Panel</ion-text>
+    </ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button class="profile-button" (click)="openProfile()">
+        <ion-icon name="person-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <ion-toolbar class="nav-toolbar">
+    <ion-segment [value]="currentPage" class="nav-segment">
+      <ion-segment-button value="dashboard" class="nav-button" (click)="navigateTo('dashboard')">
+        <ion-icon name="grid-outline"></ion-icon>
+        <ion-label>Dashboard</ion-label>
+      </ion-segment-button>
+
+      <ion-segment-button value="orders" class="nav-button" (click)="navigateTo('orders')">
+        <ion-icon name="receipt-outline"></ion-icon>
+        <ion-label>Orders</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="menu-mgmt" class="nav-button" (click)="navigateTo('menu-mgmt')">
+        <ion-icon name="receipt-outline"></ion-icon>
+        <ion-label>Menu Management</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="setting" class="nav-button" (click)="navigateTo('setting')">
+        <ion-icon name="cog"></ion-icon>
+        <ion-label>Settings</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="page-container">
+    <router-outlet>
+      <app-dashboard *ngIf="currentPage=='dashboard'"></app-dashboard>
+      <app-order-list *ngIf="currentPage=='orders'"></app-order-list>
+      <app-menulist *ngIf="currentPage=='menu-mgmt'"></app-menulist>
+      <app-setting *ngIf="currentPage=='setting'"></app-setting>
+    </router-outlet>
+  </div>
+</ion-content>

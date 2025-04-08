@@ -1,75 +1,107 @@
-<ion-header>
+<ion-header class="custom-header">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/"></ion-back-button>
-    </ion-buttons>
-    <ion-buttons slot="end">
-      <ion-button shape="round" color="light" fill="solid">
-        <ion-icon slot="icon-only" size="small" name="heart-outline"></ion-icon>
+      <ion-button (click)="goBack()" class="nav-button">
+        <ion-icon name="arrow-back-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>{{ restaurant.name }}</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button class="favorite-button">
+        <ion-icon name="heart-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-spinner *ngIf="loading" name="crescent"></ion-spinner>
+
+
 <ion-content>
 
-  <!-- Restaurant Cover Image -->
-  <div class="bg-image"></div>
+  <!-- Restaurant Hero Section -->
+  <div class="restaurant-hero">
+    <div class="bg-image" [ngStyle]="{'background-image': 'url(' + restaurant.image + ')'}"></div>
+    <div class="restaurant-details" *ngIf="restaurant">
+      <h1>{{ restaurant.name }}</h1>
 
-  <!-- Restaurant Information Section -->
-  <ion-grid class="restaurant-info">
-    <ion-row>
-      <ion-col size="12">
-        <h2><b>{{ restaurant.name }}</b></h2>
-      </ion-col>
-      <ion-col size="12" class="restaurant-details">
-        <ion-icon name="star" color="dark"></ion-icon>
-        <ion-text color="dark"><b>{{ restaurant.rating }}</b></ion-text>
-        <span class="dot">•</span>
-        <ion-text color="dark"><b>{{ restaurant.cuisines }}</b></ion-text>
-        <span class="dot">•</span>
-        <ion-text color="dark"><b>₹{{ restaurant.priceForTwo }} for two</b></ion-text>
-      </ion-col>
-      <ion-col size="12" class="delivery-info">
-        <ion-icon name="time-outline" color="medium"></ion-icon>
-        <ion-text color="dark">Delivery in {{ restaurant.deliveryTime }} mins</ion-text>
-        <span class="dot">•</span>
-        <ion-icon name="location-outline" color="medium"></ion-icon>
-        <ion-text color="dark">{{ restaurant.distance }} kms away</ion-text>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+      <div class="primary-info">
+        <div class="rating">
+          <ion-icon name="star"></ion-icon>
+          <span>{{ restaurant.rating }}</span>
+        </div>
+        <div class="divider">•</div>
+        <span>{{ restaurant.cuisines }}</span>
+        <div class="divider">•</div>
+        <span>₹{{ restaurant.priceForTwo }} for two</span>
+      </div>
 
-  <ng-container *ngIf="!loading">
-    <!-- Menu List by Category -->
-    <ion-list *ngFor="let category of menuCategories">
-      <ion-list-header>
-        <ion-label>{{ category.name }}</ion-label>
-      </ion-list-header>
-      <ng-container *ngFor="let item of category.items">
-        <ion-item lines="full">
-          <ion-label>
-            <h2>{{ item.name }}</h2>
-            <p>₹{{ item.price }}</p>
-            <p *ngIf="item.description">{{ item.description }}</p>
+      <div class="secondary-info">
+        <div class="delivery-time">
+          <ion-icon name="time-outline"></ion-icon>
+          <span>{{ restaurant.deliveryTime }} mins</span>
+        </div>
+        <div class="divider">•</div>
+        <div class="distance">
+          <ion-icon name="location-outline"></ion-icon>
+          <span>{{ restaurant.distance }} kms</span>
+        </div>
+      </div>
+    </div>
+  </div>
 
-            <!-- Quantity Management Controls -->
-            <div class="quantity-controls" *ngIf="item.quantity && item.quantity > 0">
-              <ion-button (click)="decreaseQuantity(item)" size="small" color="danger">-</ion-button>
-              <ion-input type="number" min="1" [(ngModel)]="item.quantity" name="quantity"
-                style="width: 40px; text-align: center;" disabled></ion-input>
-              <ion-button (click)="increaseQuantity(item)" size="small" color="success">+</ion-button>
+  <!-- Search Bar -->
+  <div class="search-container">
+    <ion-searchbar 
+      placeholder="Search menu items" 
+      [(ngModel)]="searchTerm" 
+      (ionInput)="searchItems($event)"
+      animated
+      debounce="300"
+      [showCancelButton]="searchTerm ? 'always' : 'never'"
+      (ionCancel)="clearSearch()">
+    </ion-searchbar>
+  </div>
+
+  <!-- Menu Categories -->
+  <div class="menu-container" *ngIf="!loading">
+    <div class="category-section" *ngFor="let category of displayedCategories">
+      <div class="category-header" [id]="category.id">
+        <h2>{{ category.name }}</h2>
+        <span class="item-count">{{ category.items.length }} items</span>
+      </div>
+
+      <div class="menu-items">
+        <div class="menu-item" *ngFor="let item of category.items">
+          <div class="item-details">
+            <div class="item-info">
+              <h3>{{ item.name }}</h3>
+              <p class="price">₹{{ item.price }}</p>
+              <p class="description" *ngIf="item.description">{{ item.description }}</p>
             </div>
-            <ion-button *ngIf="!item.quantity || item.quantity === 0" (click)="addToCart(item)" size="small"
-              color="primary" class="add-button">Add</ion-button>
-          </ion-label>
-          <ion-thumbnail slot="end" *ngIf="item.image">
-            <ion-img [src]="item.imageUrl"></ion-img>
-          </ion-thumbnail>
-        </ion-item>
-      </ng-container>
-    </ion-list>
-  </ng-container>
+
+            <div class="item-actions">
+              <div class="quantity-controls" *ngIf="item.quantity && item.quantity > 0">
+                <button class="control-btn" (click)="decreaseQuantity(item)">
+                  <ion-icon name="remove"></ion-icon>
+                </button>
+                <span class="quantity">{{ item.quantity }}</span>
+                <button class="control-btn" (click)="increaseQuantity(item)">
+                  <ion-icon name="add"></ion-icon>
+                </button>
+              </div>
+              <button *ngIf="!item.quantity || item.quantity === 0" class="add-btn" (click)="addToCart(item)">
+                Add
+              </button>
+            </div>
+          </div>
+
+          <div class="item-image" *ngIf="item.image">
+            <img [src]="item.imageUrl" alt="{{ item.name }}">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <app-menu-navigation [categories]="menuCategories"
+    (categorySelected)="scrollToCategory($event)"></app-menu-navigation> -->
 
 </ion-content>

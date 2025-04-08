@@ -1,34 +1,43 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button (click)="cancel()">
-        <ion-icon name="arrow-back"></ion-icon>
+      <ion-button class="back-button" (click)="cancel()">
+        <ion-icon name="chevron-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>Update Profile</ion-title>
+    <ion-title class="sleek-title">Update Profile</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Add New Address</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <form [formGroup]="userForm" (ngSubmit)="updateProfile()">
-        <ion-item>
-          <ion-input placeholder="Name" formControlName="name" required></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-input formControlName="email" placeholder="Email" required></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-input formControlName="phoneNumber" placeholder="Phone Number" required></ion-input>
-        </ion-item>
-       
-        <ion-button expand="full" type="submit">Update</ion-button>
-      </form>
-    </ion-card-content>
-  </ion-card>
+  <div class="profile-container">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Update Info</ion-card-title>
+      </ion-card-header>
 
+      <ion-card-content>
+        <form [formGroup]="userForm" (ngSubmit)="updateProfile()">
+          <ion-item>
+            <ion-input formControlName="name" placeholder="Full Name" type="text" required>
+            </ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-input formControlName="email" placeholder="Email Address" type="email" required>
+            </ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-input formControlName="phoneNumber" placeholder="Contact Number" type="tel" required>
+            </ion-input>
+          </ion-item>
+
+          <ion-button expand="block" class="submit-button" type="submit" [disabled]="!userForm.valid">
+            Update Profile
+          </ion-button>
+        </form>
+      </ion-card-content>
+    </ion-card>
+  </div>
 </ion-content>

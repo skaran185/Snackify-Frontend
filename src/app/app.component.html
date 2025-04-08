@@ -1,17 +1,33 @@
 <ion-app>
-  <ion-tabs>
-    <ion-tab-bar slot="bottom" *ngIf="tabService.shouldShowTabs">
-      <ion-tab-button [routerLink]="['/tabs/food']">
-        <ion-icon name="restaurant-outline"></ion-icon>
-        <ion-label>Food</ion-label>
-      </ion-tab-button>
-      <ion-tab-button (click)="openOrders()">
-        <ion-icon name="repeat-outline"></ion-icon>
-        <ion-label>Reorder</ion-label>
-      </ion-tab-button>
-    </ion-tab-bar>
-    <router-outlet></router-outlet> <!-- IMPORTANT: This renders each tab's content -->
-  </ion-tabs>
+  <ion-content>
+    <!-- Floating Cart Component with Animation -->
+    <app-floating-cart *ngIf="!isCartPage()" class="floating-cart-animation">
+    </app-floating-cart>
 
-  <app-floating-cart></app-floating-cart>
+    <!-- Main Tabs Section -->
+    <ion-tabs>
+      <ng-container *ngIf="currentUserRole=='Customer'">
+        <ion-tab-bar slot="bottom" *ngIf="tabService.shouldShowTabs && isTabRoute" class="custom-tab-bar">
+          <!-- Food Tab -->
+          <ion-tab-button [routerLink]="['/tabs/food']" class="custom-tab-button">
+            <div class="tab-content">
+              <ion-icon name="restaurant" class="tab-icon"></ion-icon>
+              <ion-label class="tab-label">Food</ion-label>
+            </div>
+          </ion-tab-button>
+
+          <!-- Reorder Tab -->
+          <ion-tab-button (click)="openOrders()" class="custom-tab-button">
+            <div class="tab-content">
+              <ion-icon name="repeat" class="tab-icon"></ion-icon>
+              <ion-label class="tab-label">Reorder</ion-label>
+            </div>
+          </ion-tab-button>
+        </ion-tab-bar>
+      </ng-container>
+
+      <!-- Router Outlet for Tab Content -->
+      <router-outlet></router-outlet>
+    </ion-tabs>
+  </ion-content>
 </ion-app>

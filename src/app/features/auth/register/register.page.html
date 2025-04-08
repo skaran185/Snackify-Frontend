@@ -1,54 +1,89 @@
-<ion-content class="ion-padding">
-  <div class="register-container">
-    <ion-card>
-      <ion-card-header>
-        <ion-img src="assets/images/Top.JPG" alt="Register Image"></ion-img>
-      </ion-card-header>
-      <ion-card-content>
-        <form [formGroup]="registerForm" (ngSubmit)="register()" class="form">
-          <ion-list>
-            <!-- Name Field -->
-            <ion-item lines="full" [class.invalid]="name?.invalid && registerForm.touched">
-              <ion-input placeholder="Name" type="text" formControlName="name"></ion-input>
-            </ion-item>
-           
+<ion-content>
+  <div class="creative-register">
+    <!-- Animated Background -->
+    <div class="animated-background">
+      <div class="circle circle-1"></div>
+      <div class="circle circle-2"></div>
+      <div class="circle circle-3"></div>
+    </div>
 
-            <!-- Email Field -->
-            <ion-item lines="full" [class.invalid]="email?.invalid && registerForm.touched">
-              <ion-input type="email" placeholder="Email" formControlName="email"></ion-input>
-            </ion-item>
-            
+    <!-- Glass Card Container -->
+    <div class="glass-container">
+      <!-- Brand Section -->
+      <div class="brand-section">
+        <div class="logo-container">
+          <ion-icon name="person-add-outline"></ion-icon>
+        </div>
+        <h1>Create Account</h1>
+        <p>Join us on your food adventure</p>
+      </div>
 
-            <!-- Password Field -->
-            <ion-item lines="full" [class.invalid]="password?.invalid && registerForm.touched">
-              <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>
-            </ion-item>
-           
+      <!-- Registration Form -->
+      <form [formGroup]="registerForm" (ngSubmit)="register()" class="register-form">
+        <!-- Name Field -->
+        <div class="form-group">
+          <div class="input-container">
+            <ion-icon name="person-outline"></ion-icon>
+            <ion-input formControlName="name" type="text" placeholder="Full Name"
+              [class.invalid]="name?.invalid && registerForm.touched" required>
+            </ion-input>
+          </div>
+          <!-- <div class="error-message" *ngIf="name?.invalid && registerForm.touched">
+            Full name is required
+          </div> -->
+        </div>
 
-            <!-- Role Field -->
-            <ion-item lines="full" [class.invalid]="roleId?.invalid && registerForm.touched">
-              <ion-select placeholder="Role" formControlName="roleId">
-                <ion-select-option *ngFor="let role of roles" [value]="role.roleID">{{ role.roleName }}</ion-select-option>
-              </ion-select>
-            </ion-item>
-           
+        <!-- Email Field -->
+        <div class="form-group">
+          <div class="input-container">
+            <ion-icon name="mail-outline"></ion-icon>
+            <ion-input formControlName="email" type="email" placeholder="Email Address"
+              [class.invalid]="email?.invalid && registerForm.touched" required>
+            </ion-input>
+          </div>
+          <!-- <div class="error-message" *ngIf="email?.invalid && registerForm.touched">
+            Please enter a valid email
+          </div> -->
+        </div>
 
-            <!-- Phone Number Field -->
-            <ion-item lines="full" [class.invalid]="phoneNumber?.invalid && registerForm.touched">
-              <ion-input type="text" placeholder="Phone Number" formControlName="phoneNumber"></ion-input>
-            </ion-item>
-          
-          </ion-list>
+        <!-- Password Field -->
+        <div class="form-group">
+          <div class="input-container">
+            <ion-icon name="lock-closed-outline"></ion-icon>
+            <ion-input formControlName="password" type="password" placeholder="Password"
+              [class.invalid]="password?.invalid && registerForm.touched" required>
+            </ion-input>
+          </div>
+          <!-- <div class="error-message" *ngIf="password?.invalid && registerForm.touched">
+            Password is required
+          </div> -->
+        </div>
 
-          <ion-button expand="block" type="submit" class="submit-button" color="primary" [disabled]="registerForm.invalid">
-            Register
+        <!-- Phone Number Field -->
+        <div class="form-group">
+          <div class="input-container">
+            <ion-icon name="call-outline"></ion-icon>
+            <ion-input formControlName="phoneNumber" type="tel" placeholder="Phone Number"
+              [class.invalid]="phoneNumber?.invalid && registerForm.touched" required>
+            </ion-input>
+          </div>
+          <!-- <div class="error-message" *ngIf="phoneNumber?.invalid && registerForm.touched">
+            Phone number is required
+          </div> -->
+        </div>
+
+        <div class="action-buttons">
+          <ion-button expand="block" class="register-button" type="submit" [disabled]="registerForm.invalid">
+            <span>Create Account</span>
+            <ion-icon name="arrow-forward-outline"></ion-icon>
           </ion-button>
 
-          <ion-button expand="block" fill="outline" routerLink="/auth/login" class="login-button">
+          <ion-button expand="block" class="login-button" fill="clear" routerLink="/auth/login">
+            <ion-icon name="arrow-back-outline"></ion-icon>
             Back to Login
           </ion-button>
-        </form>
-      </ion-card-content>
-    </ion-card>
+        </div>
+      </form>
+    </div>
   </div>
 </ion-content>

@@ -22,7 +22,7 @@ export class ToastService {
   async presentSuccessToast(message: string) {
     const toast = await this.toastController.create({
       message: message,
-      duration: 3000,
+      duration: 1000,
       color: 'success',  // Red color for error
       position: 'top',  // Position the toast at the top of the screen
     });

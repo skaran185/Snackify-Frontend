@@ -1,6 +1,50 @@
-<ion-fab *ngIf="cartItemCount$ | async as count" vertical="bottom" horizontal="end" slot="fixed">
-  <ion-fab-button color="primary" (click)="viewCart()">
-    <ion-icon name="cart"></ion-icon>
-    <ion-badge *ngIf="cartItemCount$ | async as count" color="danger">{{ count }}</ion-badge>
-  </ion-fab-button>
-</ion-fab>
+<div class="floating-cart" *ngIf="cartItemCount$ | async as count" [class.visible]="count > 0"
+  [class.tab-route]="isHomeRoute">
+  <div class="cart-handle">
+    <div class="handle-line"></div>
+    <div class="cart-indicator" *ngIf="count > 0">
+      {{ count }} {{ count > 1 ? 'items' : 'item' }} in cart
+    </div>
+  </div>
+
+  <div class="cart-content" *ngIf="currentRestaurant">
+    <!-- Restaurant Section -->
+    <div class="restaurant-info">
+      <div class="info-main">
+        <div class="restaurant-details">
+          <h3>{{currentRestaurant.name}}</h3>
+          <!-- <span class="estimated-time" *ngIf="estimatedTime">
+            <ion-icon name="time-outline"></ion-icon>
+            {{ estimatedTime }} mins
+          </span> -->
+        </div>
+        <button class="view-menu-btn" (click)="goToRestaurantMenu($event)" aria-label="View full menu">
+          View menu
+          <ion-icon name="chevron-forward-outline"></ion-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- Cart Actions -->
+    <div class="cart-actions">
+      <div class="cart-summary" (click)="viewCart($event)" role="button" tabindex="0"
+        [attr.aria-label]="'View cart with ' + count + ' items, total amount ' + totalAmount">
+        <div class="summary-details">
+          <div class="count-wrapper">
+            <span class="item-count">{{ count }} {{ count > 1 ? 'Items' : 'Item' }}</span>
+            <!-- <span class="savings" *ngIf="totalSavings > 0">You save ₹{{ totalSavings }}</span> -->
+          </div>
+          <span class="amount">₹{{ totalAmount }}</span>
+        </div>
+        <button class="checkout-btn" aria-label="Proceed to checkout">
+          <span>Checkout</span>
+          <ion-icon name="arrow-forward-outline"></ion-icon>
+        </button>
+      </div>
+
+      <button class="clear-btn" (click)="clearCart($event)" aria-label="Clear cart">
+        <ion-icon name="trash-outline"></ion-icon>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,60 +1,85 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button (click)="closeModal()">
-        <ion-icon name="arrow-back"></ion-icon>
+      <ion-button class="back-button" (click)="closeModal()">
+        <ion-icon name="chevron-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>Manage Addresses</ion-title>
+    <ion-title class="sleek-title">Manage Addresses</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <!-- List of existing addresses -->
-  <ion-list>
-    <ion-item *ngFor="let address of addresses" (click)="selectAddress(address)">
-      <ion-label>
-        <h2>{{ address.street }}</h2>
-        <p>{{ address.city }}, {{ address.state }} - {{ address.zipCode }}</p>
-        <p>Contact: {{ address.contactNumber }}</p> <!-- Display contact number -->
-      </ion-label>
-    </ion-item>
-  </ion-list>
+  <div class="address-list">
+    <div class="address-item" *ngFor="let address of addresses">
+      <ion-item lines="none" (click)="selectAddress(address)">
+        <div class="address-label">
+          <h2>{{ address.street }}</h2>
+          <p>{{ address.city }}, {{ address.state }} - {{ address.zipCode }}</p>
+          <p>
+            <ion-icon name="call-outline"></ion-icon>
+            {{ address.contactNumber }}
+          </p>
+        </div>
 
-  <!-- Button to toggle address form -->
-  <ion-button size="small" expand="full" (click)="toggleAddressForm = !toggleAddressForm">
-    + Add New Address
-  </ion-button>
+        <div class="address-actions" slot="end">
+          <ion-button fill="clear" [class.active]="address.isDefault" (click)="setDefaultAddress($event, address)">
+            <ion-icon [name]="address.isDefault ? 'checkmark-circle' : 'ellipse-outline'"></ion-icon>
+          </ion-button>
+          <ion-button fill="clear" (click)="editAddress($event, address)">
+            <ion-icon name="create-outline"></ion-icon>
+          </ion-button>
+          <ion-button fill="clear" (click)="confirmDelete($event, address)">
+            <ion-icon name="trash-outline"></ion-icon>
+          </ion-button>
+        </div>
+      </ion-item>
+    </div>
+  </div>
 
-  <!-- Conditionally display the form inside a card -->
-  <ng-container *ngIf="toggleAddressForm">
+  <div class="action-footer">
+    <ion-button expand="block" class="add-button" (click)="addNewAddress()">
+      <ion-icon name="add-outline"></ion-icon>
+      Add New Address
+    </ion-button>
+  </div>
 
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>Add New Address</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <form [formGroup]="addressForm" (ngSubmit)="onSubmit()">
-          <ion-item>
-            <ion-input placeholder="Street" formControlName="street" required></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-input formControlName="city" placeholder="City" required></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-input formControlName="state" placeholder="State" required></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-input formControlName="zipCode" placeholder="Zip Code" required></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-input formControlName="contactNumber" placeholder="Contact Number" required></ion-input>
-          </ion-item>
-          <ion-button expand="full" type="submit">Add Address</ion-button>
-        </form>
-      </ion-card-content>
-    </ion-card>
+  <ion-card *ngIf="toggleAddressForm">
+    <ion-card-header>
+      <ion-card-title>{{ isEditMode ? 'Edit Address' : 'Add New Address' }}</ion-card-title>
+    </ion-card-header>
 
-  </ng-container>
+    <ion-card-content>
+      <form [formGroup]="addressForm" (ngSubmit)="onSubmit()">
+        <ion-item>
+          <ion-input formControlName="street" placeholder="Street Address" type="text" required>
+          </ion-input>
+        </ion-item>
 
+        <ion-item>
+          <ion-input formControlName="city" placeholder="City" type="text" required>
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input formControlName="state" placeholder="State" type="text" required>
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input formControlName="zipCode" placeholder="ZIP Code" type="text" required>
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input formControlName="contactNumber" placeholder="Contact Number" type="tel" required>
+          </ion-input>
+        </ion-item>
+
+        <ion-button expand="block" class="submit-button" type="submit" [disabled]="!addressForm.valid">
+          {{ isEditMode ? 'Update Address' : 'Add Address' }}
+        </ion-button>
+      </form>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

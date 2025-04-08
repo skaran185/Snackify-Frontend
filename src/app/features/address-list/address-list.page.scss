@@ -1,0 +1,204 @@
+:host {
+    --primary-color: #FF9800;
+    --primary-dark: #F57C00;
+    --primary-light: #FFF5E6;
+    --success-color: #4CAF50;
+    --danger-color: #FF5252;
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --border-color: #E8E8E8;
+    --background-hover: #F8F9FA;
+  }
+  
+  ion-header ion-toolbar {
+    --background: white;
+    --border-color: var(--border-color);
+    --min-height: 56px;
+    
+    .sleek-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+  }
+  
+  ion-content {
+    --background: #FFFFFF;
+    
+    .address-list {
+      padding: 16px;
+      background: transparent;
+      
+      .address-item {
+        --background: white;
+        --padding-start: 16px;
+        --padding-end: 12px;
+        --padding-top: 12px;
+        --padding-bottom: 12px;
+        --inner-padding-end: 0;
+        
+        margin-bottom: 12px;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        border: 1px solid var(--border-color);
+        
+        &:hover {
+          --background: var(--background-hover);
+        }
+        
+        .address-label {
+          h2 {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+          }
+          
+          p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin: 2px 0;
+          }
+        }
+        
+        ion-icon[name="checkmark-circle"] {
+          color: var(--success-color);
+          font-size: 20px;
+          margin-right: 8px;
+        }
+        
+        ion-button {
+          height: 36px;
+          --padding-start: 8px;
+          --padding-end: 8px;
+          
+          &[fill="clear"] {
+            --color: var(--text-secondary);
+            
+            &:hover {
+              --color: var(--primary-color);
+              --background: var(--primary-light);
+            }
+            
+            &:last-child {
+              --color: var(--danger-color);
+              
+              &:hover {
+                --background: #FFF5F5;
+              }
+            }
+          }
+          
+          ion-icon {
+            font-size: 18px;
+          }
+        }
+      }
+    }
+    
+    ion-card {
+      margin: 16px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      
+      ion-card-header {
+        padding: 16px;
+        
+        ion-card-title {
+          font-size: 16px;
+          font-weight: 600;
+          color: var(--text-primary);
+        }
+      }
+      
+      ion-card-content {
+        padding: 0 16px 16px;
+        
+        form {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          
+          ion-item {
+            --background: #F8F9FA;
+            --padding-start: 12px;
+            --padding-end: 12px;
+            --min-height: 48px;
+            --border-color: transparent;
+            --highlight-height: 0;
+            
+            border-radius: 8px;
+            
+            &.item-has-focus {
+              --background: var(--primary-light);
+            }
+            
+            ion-input {
+              --padding-start: 0;
+              --placeholder-color: var(--text-secondary);
+              --placeholder-opacity: 0.8;
+              font-size: 14px;
+            }
+          }
+        }
+      }
+    }
+    
+    .action-footer {
+      padding: 16px;
+      
+      .add-button {
+        --background: var(--primary-color);
+        --background-hover: var(--primary-dark);
+        --border-radius: 10px;
+        --padding-top: 14px;
+        --padding-bottom: 14px;
+        
+        margin: 0;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 0.3px;
+        
+        &::part(native) {
+          transition: transform 0.2s;
+        }
+        
+        &:hover {
+          --background: var(--primary-dark);
+          
+          &::part(native) {
+            transform: translateY(-1px);
+          }
+        }
+      }
+    }
+    
+    .submit-button {
+      margin-top: 16px;
+      --background: var(--primary-color);
+      --background-hover: var(--primary-dark);
+      --border-radius: 8px;
+      --padding-top: 14px;
+      --padding-bottom: 14px;
+      
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      text-transform: none;
+    }
+  }
+  
+  // Animation for form toggle
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  ion-card {
+    animation: slideIn 0.3s ease-out;
+  }

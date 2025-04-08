@@ -1,0 +1,21 @@
+<ion-content class="ion-padding">
+  <div class="login-container">
+    <div class="logo-container">
+      <img src="assets/" alt="App Logo" class="app-logo">
+    </div>
+    
+    <h1>Welcome Back</h1>
+    <p>Sign in to continue to the app</p>
+    
+    <div class="auth-buttons">
+      <ion-button expand="block" (click)="googleSignIn()" class="google-btn">
+        <ion-icon name="logo-google" slot="start"></ion-icon>
+        Sign in with Google
+      </ion-button>
+    </div>
+
+    <div class="additional-options">
+      <p>Don't have an account? <a routerLink="/register">Register</a></p>
+    </div>
+  </div>
+</ion-content>

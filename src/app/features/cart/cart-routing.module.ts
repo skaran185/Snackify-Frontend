@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
 import { CartComponent } from './cart/cart.component';
+import { RouterModule, Routes } from '@angular/router';
 
-const routes: Routes = [
+type NewType = Routes;
+
+const routes: NewType = [
   { path: '', component: CartComponent },
 ];
 

@@ -29,7 +29,7 @@ export class RegisterPage implements OnInit {
       name: ['', Validators.required],  // Name is required
       email: ['', [Validators.required, Validators.email]],  // Email is required and should be in a valid format
       password: ['', [Validators.required, Validators.minLength(6)]],  // Password is required with min length of 6
-      roleId: ['', Validators.required],  // Role is required
+      roleId: [''],  // Role is required
       phoneNumber: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]]  // Phone number is required and should be a 10-digit number
     });
   }
@@ -43,6 +43,7 @@ export class RegisterPage implements OnInit {
   register() {
     if (this.registerForm.valid) {
       const payload = this.registerForm.value;
+      payload.roleId = this.roles.filter(c=>c.roleName=='Customer')[0].roleID;
       this.authService.register(payload).subscribe(
         (response) => {
           this.router.navigate(['/auth/login']);

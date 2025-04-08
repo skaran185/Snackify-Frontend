@@ -16,10 +16,10 @@ export class CouponListPage implements OnInit {
     private modalController: ModalController,
     private couponService: CouponService,
     private cartService: CartService
-  ) {}
+  ) { }
 
   ngOnInit() {
-    this.couponService.getCoupons(this.cartService.currentRestaurantId).subscribe((res: any) => {
+    this.couponService.getCoupons(this.cartService.currentRestaurant.restaurantID).subscribe((res: any) => {
       this.coupons = res;
     });
   }

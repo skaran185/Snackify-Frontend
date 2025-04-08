@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { ToastService } from 'src/app/core/services/toast.services';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,8 @@ export class LoginPage {
   loginForm: FormGroup;
 
   constructor(private fb: FormBuilder,
-    private authService: AuthService, private router: Router
+    private authService: AuthService, private router: Router,    private toastService: ToastService
+    
   ) {
     // Initialize the form with validation
     this.loginForm = this.fb.group({
@@ -33,14 +35,14 @@ export class LoginPage {
   
           if (userRole === 'Admin') {
             this.router.navigate(['/admin']);
-          } else if (userRole === 'RestaurantOwner') {
+          } else if (userRole === 'Owner') {
             this.router.navigate(['/owner']);
           } else {
             this.router.navigate(['/tabs/food']);
           }
         },
         (error) => {
-          console.error('Login failed', error);
+          this.toastService.presentErrorToast("Invalid Login Attempt. Please check your credentials.");
         }
       );
     } else {

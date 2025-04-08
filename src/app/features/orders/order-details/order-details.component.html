@@ -19,9 +19,11 @@
     <ion-card-content>
       <ion-badge color="success">{{ order.orderStatus }}</ion-badge>
       <ion-label>Total Amount: ₹{{ order.totalAmount }}</ion-label>
-      <ion-label>Discount: -₹{{ order.discount }}</ion-label>
-      <ion-label>Charges: ₹{{ order.charges }}</ion-label>
+      <ion-label *ngIf="order.discount > 0">Discount: -₹{{ order.discount }}</ion-label>
+      <ion-label *ngIf="order.charges > 0">Charges: ₹{{ order.charges }}</ion-label>
       <ion-label>Grand Total: ₹{{ order.grandTotal }}</ion-label>
+      <ion-label>Grand Total: ₹{{ order.grandTotal }}</ion-label>
+      <ion-label *ngIf="order.paymentStatus">{{order.paymentStatus}} - {{order.paymentMethod}}</ion-label>
     </ion-card-content>
   </ion-card>
 
@@ -46,9 +48,18 @@
         <img [src]="imageUrl + item.menuItem.imageUrl" alt="Item Image" />
       </ion-thumbnail>
       <ion-label>
-        <h3>{{ item.menuItem.name }} x{{ item.quantity }}</h3>
+
+        <h3>
+          <span *ngIf="item.menuItem?.menuItemVariations && item.menuItem?.menuItemVariations[0]?.name">
+            {{item.menuItem?.menuItemVariations[0]?.name}} :
+          </span>
+          {{ item.menuItem.name }} x{{ item.quantity }}
+        </h3>
         <p>{{ item.menuItem.description }}</p>
-        <ion-note color="dark">₹{{ item.menuItem.price }}</ion-note>
+        <ion-note color="dark">
+          ₹{{ item.menuItem?.menuItemVariations[0]?.name ? item.menuItem?.menuItemVariations[0]?.price
+          : item.menuItem?.price }}
+        </ion-note>
       </ion-label>
     </ion-item>
   </ion-list>
@@ -59,7 +70,8 @@
       <ion-card-title>Delivery Address</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <p>{{ order.deliveryAddress.street }}, {{ order.deliveryAddress.city }}, {{ order.deliveryAddress.state }}, {{ order.deliveryAddress.zipCode }}
+      <p>{{ order.deliveryAddress.street }}, {{ order.deliveryAddress.city }}, {{ order.deliveryAddress.state }}, {{
+        order.deliveryAddress.zipCode }}
       </p>
       <ion-label>Contact: {{ order.deliveryAddress.contactNumber }}</ion-label>
     </ion-card-content>

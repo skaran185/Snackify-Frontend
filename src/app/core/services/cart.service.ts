@@ -10,33 +10,31 @@ export class CartService {
   cartItems$ = this.cartItems.asObservable();
 
   public currentRestaurantId: string | null = null;
+  public currentRestaurant: any | null = null;
 
-  constructor(private alertController: AlertController) { }
+  public totalAmount = new BehaviorSubject<number>(0); // New public variable for total amount
+  totalAmount$ = this.totalAmount.asObservable();
 
-  /**
-   * Adds an item to the cart. Checks if the item is from the same restaurant,
-   * and if not, prompts the user to overwrite the existing cart items.
-   * @param menuItem - The menu item to add to the cart
-   * @param quantity - The quantity of the menu item
-   * @param restaurantId - The restaurant ID of the menu item
-   */
+  constructor(private alertController: AlertController) {
+    this.cartItems$.subscribe(items => {
+      this.updateTotalAmount(items);
+    });
+  }
+
   async addToCart(menuItem: any, quantity: number) {
-    // Check if there are items in the cart from a different restaurant
-    let restaurantId = menuItem.restaurantId
+    let restaurantId = menuItem.restaurantId;
     if (this.currentRestaurantId && this.currentRestaurantId !== restaurantId) {
       const userConfirmed = await this.showConfirmOverwritePopup();
 
       if (!userConfirmed) {
-        return; // Exit if the user does not confirm
+        return;
       }
 
-      this.clearCart(); // Clear the cart if confirmed
+      this.clearCart();
     }
 
-    // Set the current restaurant ID if it's a new cart
     this.currentRestaurantId = restaurantId;
 
-    // Add the item to the cart (either new or after clearing the cart)
     const items = this.cartItems.getValue();
     const existingItem = items.find(item => item.menuItem.id === menuItem.id);
 
@@ -45,44 +43,36 @@ export class CartService {
     } else {
       items.push({ menuItem, quantity });
     }
-    this.cartItems.next(items); // Update the value
+    this.cartItems.next(items);
   }
 
-  /**
-   * Removes an item from the cart.
-   * @param menuItemId - The ID of the menu item to remove
-   */
   removeFromCart(menuItemId: string) {
     const items = this.cartItems.getValue();
     const updatedItems = items.filter(item => item.menuItem.id !== menuItemId);
-    this.cartItems.next(updatedItems); // Update the value
+    this.cartItems.next(updatedItems);
 
-    // Reset currentRestaurantId if cart is empty
     if (updatedItems.length === 0) {
       this.currentRestaurantId = null;
     }
   }
 
-  /**
-   * Clears the cart and resets the restaurant ID.
-   */
   clearCart() {
-    this.cartItems.next([]); // Clear the cart
-    this.currentRestaurantId = null; // Reset restaurant ID
+    this.cartItems.next([]);
+    this.currentRestaurantId = null;
   }
 
-  /**
-   * Gets the current cart items value.
-   * @returns - The current cart items as an array
-   */
   getCartItemsValue(): any[] {
-    return this.cartItems.getValue(); // Method to get current value
+    return this.cartItems.getValue();
   }
 
-  /**
-   * Shows a confirmation popup asking the user if they want to overwrite the cart.
-   * @returns - A promise that resolves to true if the user confirms, false otherwise
-   */
+  public updateTotalAmount(items: any[]) {
+    const total = items.reduce((sum, item) => {
+      const price = item.menuItem.selectedVariation ? item.menuItem.selectedVariation.price : item.menuItem.price;
+      return sum + price * item.quantity;
+    }, 0);
+    this.totalAmount.next(total);
+  }
+
   private async showConfirmOverwritePopup(): Promise<boolean> {
     return new Promise<boolean>(async (resolve) => {
       const alert = await this.alertController.create({
@@ -93,13 +83,13 @@ export class CartService {
             text: 'Cancel',
             role: 'cancel',
             handler: () => {
-              resolve(false); // Return false if user cancels
+              resolve(false);
             }
           },
           {
             text: 'Overwrite',
             handler: () => {
-              resolve(true); // Return true if user confirms overwrite
+              resolve(true);
             }
           }
         ]
